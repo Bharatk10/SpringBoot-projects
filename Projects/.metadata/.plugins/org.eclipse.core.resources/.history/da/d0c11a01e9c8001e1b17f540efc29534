@@ -1,0 +1,100 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<title>Material Inspection</title>
+
+<style>
+#vendorTable {
+	width: 100%;
+	margin-top: 20px;
+	border-collapse: collapse;
+}
+
+#vendorTable th, #vendorTable td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+#vendorTable th {
+	background-color: #f2f2f2;
+}
+
+@media ( max-width : 600px) {
+	#vendorTable {
+		font-size: 14px;
+	}
+}
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+</style>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+
+	<div class="content">
+		<button type="button" onclick="history.back()">Back</button>
+		<div class="boxes-container">
+			<a href="/zettaInsp/addVendor">Add Vendor</a> <a
+				href="/zettaInsp/vendors">List all Vendors</a> <a
+				href="/zettaInsp/searchVendor">Search Vendor</a>
+				
+				
+		</div>
+
+
+<h3 style="z-index:100; color: green ;text-align:center" th:text=${message}></h3>
+		<table id="vendorTable" class="table"
+			th:if="${not #lists.isEmpty(vendorList)}">
+			<thead>
+				<tr>
+					<th>Vendor ID</th>
+					<th>Vendor Name</th>
+					<th>Email</th>
+					<th>Location</th>
+					<th>State</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr th:each="vendor : ${vendorList}">
+					<td th:text="${vendor.vendorId}"></td>
+					<td th:text="${vendor.vendorName}"></td>
+					<td th:text="${vendor.vendorEmail}"></td>
+					<td th:text="${vendor.location}"></td>
+					<td th:text="${vendor.state}"></td>
+					<td class="w-20"><a
+						th:href="@{updatevendor/{vendorId}(vendorId = ${vendor.vendorId})}"><i
+							class="fas fa-edit"></i></a> &nbsp;&nbsp; <a
+						th:href="@{deletevendor/{vendorId}(vendorId = ${vendor.vendorId})}"
+						onclick="return confirm('Are you sure you want to delete this vendor?');">
+							<i class="fa-solid fa-trash" style="color: #f22121"></i>
+					</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,208 @@
+package com.zettamine.boot.service;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.InspectionActuals;
+import com.zettamine.boot.entity.InspectionLot;
+import com.zettamine.boot.entity.MaterialInspection;
+import com.zettamine.boot.models.InspLotModel;
+import com.zettamine.boot.repository.InspectionActualsRepo;
+import com.zettamine.boot.repository.InspectionLotRepository;
+
+@Service
+public class InspLotServiceImpl implements IInsptLotService {
+
+	private InspectionLotRepository inspLotRepo;
+	
+	@Autowired
+	private InspectionActualsRepo inspActRepo;
+
+	public InspLotServiceImpl(InspectionLotRepository inspLotRepo) {
+		super();
+		this.inspLotRepo = inspLotRepo;
+	}
+
+	@Override
+	public InspectionLot saveInspLotWithStatus(InspectionLot inspLot, String status) {
+
+		InspectionLot inspLotObj = null;
+		LocalDate today = LocalDate.now();
+		Date sqlDate = Date.valueOf(today);
+		inspLot.setCreatedOn(sqlDate);
+		if (status.equalsIgnoreCase("yes")) {
+			inspLot.setStartDate(sqlDate);
+		}
+		inspLotObj = inspLotRepo.save(inspLot);
+		return inspLotObj;
+	}
+
+	@Override
+	public List<InspectionLot> getAllInspectionLots() {
+
+		List<InspectionLot> inspLots = inspLotRepo.findAllOrderByLotId();
+		return inspLots;
+	}
+
+	@Override
+	public List<InspLotModel> getAllInspectionModelData(List<InspectionLot> inspLots) {
+
+		List<InspLotModel> inspLotModel = new ArrayList<>();
+
+		for (InspectionLot inspectionLot : inspLots) {
+
+			InspLotModel InspLotModel = new InspLotModel();
+			InspLotModel.setLotId(inspectionLot.getLotId());
+			InspLotModel.setVendorName(inspectionLot.getVendor().getVendorName());
+			InspLotModel.setMaterialName(inspectionLot.getMaterial().getDesc());
+			InspLotModel.setPlantName(inspectionLot.getPlant().getPlantName());
+			InspLotModel.setCreatedOn(inspectionLot.getCreatedOn());
+	
+			if(inspectionLot.getStartDate() == null) {
+				InspLotModel.setStartDate("  -  ");
+			}
+			else {
+				InspLotModel.setStartDate(inspectionLot.getStartDate().toString());
+			}
+			if(inspectionLot.getEndDate() == null) {
+				InspLotModel.setEndDate("  -  ");
+			}
+			else {
+				InspLotModel.setEndDate(inspectionLot.getEndDate().toString());
+			}
+	
+			InspLotModel.setResult(inspectionLot.getResult());
+			InspLotModel.setMatId(inspectionLot.getMaterial().getMaterialId());
+			if (inspectionLot.getUser() == null) {
+				InspLotModel.setUserName(null);
+			} else {
+				InspLotModel.setUserName(inspectionLot.getUser().getUserName());
+			}
+
+			InspLotModel.setRemarks(inspectionLot.getRemarks());
+
+			inspLotModel.add(InspLotModel);
+
+		}
+
+		return inspLotModel;
+	}
+
+	@Override
+	public InspectionLot getInspectionLotById(int id) {
+
+		InspectionLot inspLot = null;
+
+		Optional<InspectionLot> optInspLot = inspLotRepo.findById(id);
+
+		if (optInspLot.isPresent()) {
+			inspLot = optInspLot.get();
+		}
+		return inspLot;
+	}
+
+	@Override
+	public InspectionLot saveInspLot(InspectionLot inspLot) {
+		InspectionLot inspLotObj = null;
+		inspLotObj = inspLotRepo.save(inspLot);
+		return inspLotObj;
+	}
+
+	@Override
+	public Boolean getStatusOfInspectionActuals(int lotId, String matId) {
+		
+		Optional<InspectionLot> inspLot = inspLotRepo.findById(lotId);
+		
+		long count;
+		
+		List<Integer> ids;
+		
+		if(inspLot.isPresent()) {
+			
+			
+		 ids = inspLot.get().getMaterial().getMatInsp().stream().map(obj->obj.getChannelId()).collect(Collectors.toList());
+			
+			 count = inspLot.get().getMaterial().getMatInsp().stream().count();
+			 
+			 Integer actCount = inspActRepo.getInspActualsByLotIdAndChannelId(lotId, ids);
+			 
+			 if(actCount == count) {
+				 return true;
+			 } 
+		}
+		
+		return false;
+	
+	}
+
+	@Override
+	public List<MaterialInspection> getMaterialInspectionList(List<MaterialInspection> matInspList,
+			List<InspectionActuals> inspActList) {
+		
+		List<MaterialInspection> result = new ArrayList<>();
+		
+		if(inspActList.isEmpty()) {
+			
+			return matInspList;
+		}
+        
+        for (MaterialInspection materialInspection : matInspList) {
+            boolean found = false;
+            for (InspectionActuals inspectionActual : inspActList) {
+                if (materialInspection.getChannelId().equals(inspectionActual.getMatInsp().getChannelId())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                result.add(materialInspection);
+            }
+        }
+        
+        return result;
+	}
+
+	@Override
+	public Boolean generateInspLotResult(InspectionLot inspLot) {
+
+		List<InspectionActuals> inspActuals = inspLot.getInspectionActuals();
+		
+		for (InspectionActuals inspActual : inspActuals) {
+			
+			MaterialInspection matInsp = inspActual.getMatInsp();
+		    Float actualMax = inspActual.getMaxMesurment();
+		    Float actualMin = inspActual.getMinMesurment();
+		    
+		   
+		    Float charMax = matInsp.getUpperTollerance();
+		    Float charMin = matInsp.getLowerTollerance();
+		    
+		   
+		    if (actualMax > charMax) {
+		        
+		    	return false;
+		    }
+		    if (actualMin < charMin) {
+		        
+		    	return false;
+		    }
+			
+		}
+		
+		return true;
+		
+			
+		
+		
+	}
+
+	
+
+}

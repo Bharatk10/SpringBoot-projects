@@ -1,0 +1,19 @@
+package com.zettamine.accounts.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Data;
+
+@Data
+public class AccountDto {
+	
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Long accountNumber;
+	
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private String accountType;
+	
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private String branchAddress;
+
+}

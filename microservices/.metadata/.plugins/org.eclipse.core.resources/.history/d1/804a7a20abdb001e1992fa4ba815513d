@@ -1,0 +1,30 @@
+package com.zettamine.docker.compose.servive;
+
+import java.util.List;
+
+import com.zettamine.docker.compose.entity.User;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public class userServiceImpl implements IUserService {
+
+	@Override
+	public List<User> getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User saveUser(User user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User getUserById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

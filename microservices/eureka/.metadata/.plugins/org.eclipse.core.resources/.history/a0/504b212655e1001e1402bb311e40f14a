@@ -1,0 +1,13 @@
+package com.zettamine.accounts.service;
+
+import com.zettamine.accounts.dto.CustomerDetailsDto;
+
+public class CustomerDetailsServiceImpl implements ICustomerDetailsService{
+
+	@Override
+	public CustomerDetailsDto fetchCustomerDetails(String mobileNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

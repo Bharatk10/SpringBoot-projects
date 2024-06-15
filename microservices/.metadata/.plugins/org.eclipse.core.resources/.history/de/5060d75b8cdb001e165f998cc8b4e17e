@@ -1,0 +1,23 @@
+services:
+  accounts:
+    image: "bharatkumaradapa/docker-accounts:1.0"
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+  loanss:
+    image: "bharatkumaradapa/docker-accounts:1.0"
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+  
+    
+  	
+  	

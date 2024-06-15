@@ -1,0 +1,138 @@
+package com.zettamine.accounts.service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Random;
+
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.accounts.constants.AppConstants;
+import com.zettamine.accounts.dto.AccountDto;
+import com.zettamine.accounts.dto.CustomerDto;
+import com.zettamine.accounts.entity.Account;
+import com.zettamine.accounts.entity.Customer;
+import com.zettamine.accounts.exception.AccountNumberUpdateException;
+import com.zettamine.accounts.exception.CustomerAlreadyExistsException;
+import com.zettamine.accounts.exception.ResourceNotFoundException;
+import com.zettamine.accounts.mapper.Mapper;
+import com.zettamine.accounts.repository.AccountRepository;
+import com.zettamine.accounts.repository.CustomerRepository;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class AccountServiceImpl implements IAcountService {
+
+	private CustomerRepository customerRepo;
+
+	private AccountRepository accountRepo;
+
+	@Override
+	public void createAccount(CustomerDto customerDto) {
+
+		String mobileNumber = customerDto.getMobileNumber();
+
+		Optional<Customer> optCustomer = customerRepo.findByMobileNumber(mobileNumber);
+
+		if (optCustomer.isPresent()) {
+			throw new CustomerAlreadyExistsException(
+					"The customer Already exists with the given mobile Number " + mobileNumber);
+		}
+
+		Customer customer = Mapper.mapCustomerDtoToCustomer(customerDto, new Customer());
+
+		customer.setCreatedAt(LocalDateTime.now());
+		customer.setCreatedBy("System");
+		System.out.println(customer);
+		Customer customerObj = customerRepo.save(customer);
+
+		Account account = new Account();
+
+		Long accountNum = 10000000L + new Random().nextLong(10000000);
+		account.setAccountNumber(accountNum);
+		account.setCustomerId(customerObj.getCustomerId());
+		account.setBrachAddress(AppConstants.ADDRESS);
+		account.setAccountType(AppConstants.SAVINGS);
+		account.setCreatedAt(LocalDateTime.now());
+		account.setCreatedBy("System");
+
+		accountRepo.save(account);
+
+	}
+
+	@Override
+	public CustomerDto getCustomerDetailsByMobileNumber(String mobileNumber) {
+
+		Customer customer = customerRepo.findByMobileNumber(mobileNumber)
+				.orElseThrow(() -> new ResourceNotFoundException("Customer", "MobileNumber", mobileNumber));
+
+		Account account = accountRepo.findByCustomerId(customer.getCustomerId()).orElseThrow(
+				() -> new ResourceNotFoundException("Account", "Account number", customer.getCustomerId().toString()));
+
+		CustomerDto customerDto = Mapper.mapCustomerToCustomerDto(customer, new CustomerDto());
+
+		AccountDto accountDto = Mapper.mapAccountToAccountDto(account, new AccountDto());
+
+		customerDto.setAccountDto(accountDto);
+		return customerDto;
+	}
+
+	@Override
+	public CustomerDto updateCustomerDetails(CustomerDto customerDto) {
+		
+		System.out.println("Account object "+customerDto.getAccountDto());
+
+		Customer customer = customerRepo.findByMobileNumber(customerDto.getMobileNumber()).orElseThrow(
+				() -> new ResourceNotFoundException("Customer", "MobileNumber", customerDto.getMobileNumber()));
+		
+		if(customerDto.getAccountDto()!=null) {
+			
+			Account account = accountRepo.findByCustomerId(customer.getCustomerId()).orElseThrow(
+					() -> new ResourceNotFoundException("Account", "Account number", customer.getCustomerId().toString()));
+			
+			
+			if(!account.getAccountNumber().equals(customerDto.getAccountDto().getAccountNumber())) {
+				
+				throw new AccountNumberUpdateException("The Account Number can't be updated");
+			}
+		
+			account = Mapper.mapAccountDtoToAccount(customerDto.getAccountDto(),  account);
+			
+			account.setUpdatedAt(LocalDateTime.now());
+			account.setUpdatedBy("Roy");
+			 accountRepo.save(account);
+			
+			  
+		}
+		
+		Customer customerObj = Mapper.mapCustomerDtoToCustomer(customerDto, customer);
+		
+		customerObj.setUpdatedAt(LocalDateTime.now());
+		customerObj.setUpdatedBy("Roy");
+		Customer customerSaveObj = customerRepo.save(customerObj);
+
+		Mapper.mapCustomerToCustomerDto(customerSaveObj, customerDto);
+
+		return customerDto;
+	}
+
+	@Override
+	public void deleteCustomer(String mobileNumber) {
+
+		Customer customer = customerRepo.findByMobileNumber(mobileNumber)
+				.orElseThrow(() -> new ResourceNotFoundException("Customer", "MobileNumber", mobileNumber));
+
+		Optional<Account> optAcount = accountRepo.findByCustomerId(customer.getCustomerId());
+
+		if (optAcount.isPresent()) {
+
+			accountRepo.delete(optAcount.get());
+		}
+		
+		customerRepo.delete(customer);
+
+	}
+
+}

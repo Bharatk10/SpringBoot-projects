@@ -1,0 +1,27 @@
+package com.zettamine.boot.security;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+
+	public static void main(String[] args) {
+
+		SpringApplication.run(Application.class, args);
+		
+		List<Integer> list = new ArrayList<>();
+		
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		
+		Iterator<Integer> iter = list.iterator();
+	}
+
+}

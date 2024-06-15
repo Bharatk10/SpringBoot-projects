@@ -1,0 +1,84 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon"  href="/logo.jpg">
+<link rel="stylesheet" href ="/home.css">
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<title>Material Inspection</title>
+
+</head>
+<body>
+
+	<nav>
+		<h1>
+		<a href="home">	<img src="../../../images/logo.png" alt="User Avatar"></a> Zetta
+			Material Inspection
+		</h1>
+		<div class="user-details">
+			<i class="fa-regular fa-user"></i> <span th:text="${userName}">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="/zettaInsp/logout" class="logout"> <i
+				class="fa-solid fa-right-from-bracket"></i>
+			</a>
+		</div>
+	</nav>
+
+	<sid>
+        <div class="dropdown">
+            <span class="dropbtn">Vendor</span>
+            <div class="dropdown-content">
+            	 <a href="/zettaInsp/vendor">Vendor</a>
+            	 <a href="/zettaInsp/addVendor">Add Vendor</a>
+                <a href="/zettaInsp/vendors">List of Vendors</a>
+                <a href="/zettaInsp/searchVendor">Search Vendor</a>
+            </div>
+        </div>
+        <br>
+         <div class="dropdown">
+            <span class="dropbtn">Plant</span>
+            <div class="dropdown-content">
+            	 <a href="/zettaInsp/plant">Plant</a>
+                <a href="/zettaInsp/addPlant">Add Plant</a>
+                 <a href="/zettaInsp/plants">List of Plants</a>
+                <a href="/zettaInsp/searchVendor">Search Plant</a>
+            </div>
+        </div>
+        <br>
+        <div class="dropdown">
+            <span class="dropbtn">Material</span>
+            <div class="dropdown-content">
+            	 <a href="/zettaInsp/material">Material</a>
+                <a href="/zettaInsp/addMaterial/add">Add Material</a>
+                 <a href="/zettaInsp/materials">List of materials</a>
+                <a href="/zettaInsp/searchmaterial">Search material</a>
+                <a href="/zettaInsp/addcharacteristics">Add material characteristics</a>
+            </div>
+        </div>
+        
+         <div class="dropdown">
+            <span class="dropbtn">Inspection Lot</span>
+            <div class="dropdown-content">
+            	 <a href="/zettaInsp/inspLot">Inspection Lot</a>
+                <a href="/zettaInsp/addMaterial/add">Add Material</a>
+                 <a href="/zettaInsp/materials">List of materials</a>
+                <a href="/zettaInsp/searchmaterial">Search material</a>
+                <a href="/zettaInsp/addcharacteristics">Add material characteristics</a>
+            </div>
+        </div>
+       
+        
+    </sid>
+	
+
+	<div class="content">
+
+		<div class="boxes-container">
+			<a href="/zettaInsp/vendor">Vendor</a> <a href="/zettaInsp/plant">Plant</a> <a
+				href="/zettaInsp/material">Material</a> <a href="#">Inspection Lot</a>
+		</div>
+		
+	</div>
+
+</body>
+</html>

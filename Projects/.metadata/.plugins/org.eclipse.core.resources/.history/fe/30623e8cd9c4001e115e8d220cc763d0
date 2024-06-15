@@ -1,0 +1,9 @@
+package com.zettamine.boot.service;
+
+import com.zettamine.boot.entity.MaterialInspection;
+
+public interface IMaterialInspService {
+	
+	MaterialInspection saveMaterialInsp(MaterialInspection matInsp);
+
+}

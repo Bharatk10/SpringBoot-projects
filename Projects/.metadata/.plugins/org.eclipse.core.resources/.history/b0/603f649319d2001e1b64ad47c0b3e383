@@ -1,0 +1,6 @@
+package com.zettamine.boot.constants;
+
+public interface ValidationContsants {
+
+	private final static  BLANK_ERROR_MESSAGE ="The Field should contain data";
+}

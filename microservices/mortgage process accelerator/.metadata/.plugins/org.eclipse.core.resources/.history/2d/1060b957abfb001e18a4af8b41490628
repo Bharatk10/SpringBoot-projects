@@ -1,0 +1,81 @@
+package com.zettamine.mpa.escrow.serviceImpl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.mpa.escrow.dto.EscrowReqDto;
+import com.zettamine.mpa.escrow.entity.EscrowReq;
+import com.zettamine.mpa.escrow.repository.EscrowRequirmentRepository;
+import com.zettamine.mpa.escrow.service.EscrowReqService;
+import com.zettamine.mpa.mapper.EscrowReqMapper;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class EscrowReqServiceImpl implements EscrowReqService{
+	
+	private EscrowRequirmentRepository escroReqRepo;
+	private EscrowReqMapper reqMapper;
+	
+	@Override
+	public List<EscrowReqDto> getAll() {
+		List<EscrowReq> escoReqList = escroReqRepo.findAll();
+		List<EscrowReqDto> dtoList = reqMapper.toDto(escoReqList);
+		return dtoList;
+	}
+
+	@Override
+	public EscrowReqDto findById(Integer escId) {
+		Optional<EscrowReq> byId = escroReqRepo.findById(escId);
+		if(byId.isPresent()) {
+		return reqMapper.toDto(byId.get());
+		}
+		return null;
+	}
+
+	@Override
+	public void save(EscrowReqDto escReqDto, Integer id) {
+		Optional<EscrowReq> byId = escroReqRepo.findById(id);
+		if(byId.isPresent()) {
+			EscrowReq escrowReq = byId.get();
+			escrowReq.setReqName(escReqDto.getReqName());
+			escrowReq.setDescription(escReqDto.getDescription());
+			escroReqRepo.save(escrowReq);
+		}
+	}
+
+	@Override
+	public EscrowReqDto findByReqName(String reqName) {
+		Optional<EscrowReq> reqOpt = escroReqRepo.findByReqName(reqName);
+		if(reqOpt.isPresent()) {
+			return reqMapper.toDto(reqOpt.get());
+		}
+		return null;
+	}
+
+	@Override
+	public void save(List<EscrowReqDto> reqList) {
+		List<EscrowReq> escrowReq = reqMapper.toEntity(reqList);
+		escroReqRepo.saveAll(escrowReq);
+	}
+
+	@Override
+	public List<EscrowReqDto> findByReqName(List<String> reqName) {
+		List<EscrowReq> reqList = escroReqRepo.findByReqName(reqName);
+		List<EscrowReqDto> dto = reqMapper.toDto(reqList);
+		return dto;
+	}
+
+	@Override
+	public List<String> getAllReq() {
+		List<EscrowReqDto> reqList = getAll();
+		return reqList.stream().map(req-> req.getReqName()).toList();
+	}
+}
+

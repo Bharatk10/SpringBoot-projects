@@ -1,0 +1,122 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<title>Material Inspection</title>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<style>
+.content {
+	max-width: 800px;
+	margin: 20px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+}
+
+label {
+	font-weight: bold;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin: 5px 0;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+</style>
+</head>
+
+<body>
+
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+
+	<div class="content">
+		<h1>Add Inspection Lot Form</h1>
+
+
+		<form th:action="@{/zettaInsp/submitinspLot}" th:object="${inspLot}" method="post">
+
+			<input type="hidden" id="lotId" th:field="*{lotId}" />
+			 <label for="materialId">Material Name:</label> 
+			 
+				<select id="materialName" name="materialName" required>
+        <option value="">Select Material Name</option>
+       
+        <option th:each="materialName : ${materialNameList}" th:value="${materialName}" th:text="${materialName}"></option>
+    </select>
+     <label for="vendorName">Vendor Name:</label> 
+			 
+				<select id="vendorName" name="vendorName"  required>
+        <option value="">Select Vendor Name</option>
+       
+        <option th:each="vendorName : ${vendorNameList}" th:value="${vendorName}" th:text="${vendorName}"></option>
+    </select>
+    <label for="plantName">Plant Id:</label> 
+			 
+				<select id="plantName" name="plantName"  required>
+        <option value="">Select Plant ID</option>
+       
+        <option th:each="plantName : ${plantNameList}" th:value="${plantName}" th:text="${plantName}"></option>
+    </select>
+			
+			
+        <label for="startInspection">Start Inspection Today?</label>
+		 <div style="display: flex; align-items: center;">
+        <input style="width:10%" type="radio" id="startInspectionYes" name="startInspection"  value="yes" required>
+        <label for="startInspectionYes">Yes</label>
+        <input style="width:10%" type="radio" id="startInspectionNo" name="startInspection"  value="no" required>
+        <label for="startInspectionNo">No</label>
+        </div>
+    
+
+    <div>
+        
+        <button type="submit">Submit</button>
+
+       
+        <button type="reset">Reset</button>
+        
+     
+       
+        <button type="button" onclick="history.back()">Back</button>
+
+       
+        <button type="button" ><a href="home">Home</a></button>
+    </div>
+			
+		</form>
+		
+	</div>
+	
+</body>
+</html>

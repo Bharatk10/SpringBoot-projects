@@ -1,0 +1,109 @@
+package com.zettamine.mpa.mapper;
+
+import com.zettamine.mpa.escrow.dto.EscrowAgentDto;
+import com.zettamine.mpa.escrow.dto.EscrowDto;
+import com.zettamine.mpa.escrow.dto.EscrowServiceAreaDto;
+import com.zettamine.mpa.escrow.entity.Escrow;
+import com.zettamine.mpa.escrow.entity.EscrowAgent;
+import com.zettamine.mpa.escrow.entity.EscrowServiceArea;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2024-04-11T09:43:29+0530",
+    comments = "version: 1.6.0.Beta1, compiler: Eclipse JDT (IDE) 3.36.0.v20231114-0937, environment: Java 17.0.9 (Eclipse Adoptium)"
+)
+@Component
+public class EscrowAgentMapperImpl implements EscrowAgentMapper {
+
+    @Override
+    public EscrowAgent toEntity(EscrowAgentDto agentDto) {
+        if ( agentDto == null ) {
+            return null;
+        }
+
+        EscrowAgent escrowAgent = new EscrowAgent();
+
+        escrowAgent.setAvgTxVol( agentDto.getAvgTxVol() );
+        escrowAgent.setEmail( agentDto.getEmail() );
+        escrowAgent.setEscrow( escrowDtoToEscrow( agentDto.getEscrow() ) );
+        escrowAgent.setEscrowAgentId( agentDto.getEscrowAgentId() );
+        escrowAgent.setEscrowLicenceId( agentDto.getEscrowLicenceId() );
+        escrowAgent.setEscrowSw( agentDto.getEscrowSw() );
+        escrowAgent.setFirstName( agentDto.getFirstName() );
+        escrowAgent.setLastName( agentDto.getLastName() );
+        escrowAgent.setPhone( agentDto.getPhone() );
+        escrowAgent.setTxSuccessRate( agentDto.getTxSuccessRate() );
+
+        return escrowAgent;
+    }
+
+    protected List<EscrowAgent> escrowAgentDtoListToEscrowAgentList(List<EscrowAgentDto> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<EscrowAgent> list1 = new ArrayList<EscrowAgent>( list.size() );
+        for ( EscrowAgentDto escrowAgentDto : list ) {
+            list1.add( toEntity( escrowAgentDto ) );
+        }
+
+        return list1;
+    }
+
+    protected EscrowServiceArea escrowServiceAreaDtoToEscrowServiceArea(EscrowServiceAreaDto escrowServiceAreaDto) {
+        if ( escrowServiceAreaDto == null ) {
+            return null;
+        }
+
+        EscrowServiceArea escrowServiceArea = new EscrowServiceArea();
+
+        escrowServiceArea.setCity( escrowServiceAreaDto.getCity() );
+        escrowServiceArea.setCounty( escrowServiceAreaDto.getCounty() );
+        escrowServiceArea.setEscrow( escrowServiceAreaDto.getEscrow() );
+        escrowServiceArea.setState( escrowServiceAreaDto.getState() );
+        escrowServiceArea.setZipcode( escrowServiceAreaDto.getZipcode() );
+
+        return escrowServiceArea;
+    }
+
+    protected List<EscrowServiceArea> escrowServiceAreaDtoListToEscrowServiceAreaList(List<EscrowServiceAreaDto> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<EscrowServiceArea> list1 = new ArrayList<EscrowServiceArea>( list.size() );
+        for ( EscrowServiceAreaDto escrowServiceAreaDto : list ) {
+            list1.add( escrowServiceAreaDtoToEscrowServiceArea( escrowServiceAreaDto ) );
+        }
+
+        return list1;
+    }
+
+    protected Escrow escrowDtoToEscrow(EscrowDto escrowDto) {
+        if ( escrowDto == null ) {
+            return null;
+        }
+
+        Escrow escrow = new Escrow();
+
+        escrow.setAddress( escrowDto.getAddress() );
+        escrow.setCity( escrowDto.getCity() );
+        escrow.setEmail( escrowDto.getEmail() );
+        escrow.setEsAcBankName( escrowDto.getEsAcBankName() );
+        escrow.setEsProcessTime( escrowDto.getEsProcessTime() );
+        escrow.setEscoId( escrowDto.getEscoId() );
+        escrow.setEscoName( escrowDto.getEscoName() );
+        escrow.setEscrowAgent( escrowAgentDtoListToEscrowAgentList( escrowDto.getEscrowAgent() ) );
+        escrow.setInEscrowAcNo( escrowDto.getInEscrowAcNo() );
+        escrow.setPhone( escrowDto.getPhone() );
+        escrow.setServiceArea( escrowServiceAreaDtoListToEscrowServiceAreaList( escrowDto.getServiceArea() ) );
+        escrow.setState( escrowDto.getState() );
+        escrow.setZipcode( escrowDto.getZipcode() );
+
+        return escrow;
+    }
+}

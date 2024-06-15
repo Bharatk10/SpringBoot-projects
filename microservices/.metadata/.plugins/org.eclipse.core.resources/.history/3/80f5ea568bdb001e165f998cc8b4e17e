@@ -1,0 +1,10 @@
+services:
+  account:
+  	image: "bharatkumaradapa/docker-accounts"
+  	container_name: accounts-ms
+  	ports:
+  	 - "8080:8080"
+  	display:
+  	 resources:
+  	 	limits:
+  	 	 memory : 700m

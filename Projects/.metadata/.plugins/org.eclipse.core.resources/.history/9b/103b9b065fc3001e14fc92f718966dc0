@@ -1,0 +1,75 @@
+package com.zettamine.boot.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.zettamine.boot.entity.User;
+import com.zettamine.boot.service.IUserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
+@Controller
+@RequestMapping("/zettaInsp")
+public class LoginController {
+
+	private IUserService userService;
+
+	public LoginController(IUserService userService) {
+		super();
+		this.userService = userService;
+	}
+
+	@PostMapping("/login")
+	public String verifyUser(HttpServletRequest request, @RequestParam("userName") String userName,
+			@RequestParam("password") String password,Model model) {
+
+		Boolean status = userService.validateUserCredintials(userName, password);
+
+		if (status) {
+			HttpSession session = request.getSession();
+			User user = userService.getUserDetailsByUserName(userName);
+			session.setAttribute("user", user);
+			return "redirect:home";
+		}
+		model.addAttribute("messgae","Incorrect Login credntials");
+
+		return "login";
+	}
+
+	@GetMapping(value = { "/home", "" })
+	public String getWelcomePage(HttpServletRequest request,Model model ) {
+
+		HttpSession session = request.getSession(false);
+		
+		 if (session == null || session.getAttribute("user") == null) {
+			 
+			 model.addAttribute("message","Please Login");
+			 
+		        return "login";
+		    }
+
+		User user = (User) session.getAttribute("user");
+		
+		model.addAttribute("userName",user.getUserName());
+
+		return "home";
+	}
+	@GetMapping(value= "/logout")
+	public String logout(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession(false);
+
+	    if (session != null) {
+	        session.invalidate(); 
+	    }
+
+		
+		return "redirect:/";
+	}
+
+}

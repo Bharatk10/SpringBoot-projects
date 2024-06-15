@@ -1,0 +1,12 @@
+package com.zettamine.boot.utility;
+
+public class StringUtility {
+	
+	 public static String processFormString(String input) {
+	        
+	        String processedString = input.toUpperCase();
+	        processedString = processedString.replaceAll("\\s+", " ");
+	        return processedString;
+	    }
+
+}

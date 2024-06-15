@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: Bharat@10
+    url: 'jdbc:postgresql://localhost:5432/db_material_inspection?currentSchema=mat_isp                 '
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  thymeleaf:
+    prefix: classpath:/templates/
+zettaInsp:
+  messages:
+    saveSuccess: Contact Saved Successfully
+    updateSuccess: Contact Updated Successfully
+    saveFail: Contact Operation Failed

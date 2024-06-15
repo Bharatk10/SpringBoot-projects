@@ -1,0 +1,63 @@
+package com.zettamine.boot.service;
+
+import java.util.Optional;
+import java.util.TreeSet;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.InspectionActuals;
+import com.zettamine.boot.entity.InspectionLot;
+import com.zettamine.boot.repository.InspectionActualsRepo;
+import com.zettamine.boot.repository.InspectionLotRepository;
+import com.zettamine.boot.repository.MatInspRepository;
+
+@Service
+public class InspActualServiceImpl implements IInspActualService {
+	
+	
+	private InspectionActualsRepo inspActRepo;
+	
+	@Autowired
+	private MatInspRepository matInspRepo;
+
+	
+	@Autowired
+	private InspectionLotRepository inspLotRepo;
+
+	public InspActualServiceImpl(InspectionActualsRepo inspActRepo) {
+		super();
+		this.inspActRepo = inspActRepo;
+	}
+
+	@Override
+	public InspectionActuals saveInspectionActuals(InspectionActuals inspAct) {
+		
+		InspectionActuals inspActObj = null;
+		
+		inspActObj = inspActRepo.save(inspAct);
+		
+		return inspActObj;
+	}
+
+	@Override
+	public void saveInspActBasedonLotId(Integer lotId) {
+		
+		TreeSet<Integer> channelIds = null;
+		Optional<InspectionLot> optInspLot = inspLotRepo.findById(lotId);
+		
+		if(optInspLot.isPresent()) {
+			String  matrId = optInspLot.get().getMaterial().getMaterialId();
+			channelIds = matInspRepo.findChannelIdsByMaterialId(matrId);
+			
+			for (Integer channelId : channelIds) {
+				InspectionActuals inspAct = new InspectionActuals(lotId,channelId);
+				inspActRepo.save(new InspectionActuals(lotId,channelId));
+			}
+			
+		}
+		
+	}
+
+	
+}

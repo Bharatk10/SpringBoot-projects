@@ -1,0 +1,14 @@
+server:
+ port: 7000
+ 
+spring:
+  application:
+    name: "configurationserver"
+  profiles:
+    active:
+    - native
+  cloud:
+    config:
+      server:
+        native: 
+          search-locations: "classpath:/config"

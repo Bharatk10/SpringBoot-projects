@@ -1,0 +1,45 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.Vendor;
+import com.zettamine.boot.repository.VendorRepository;
+
+@Service
+public class VendorServiceImpl implements IVendorService {
+	
+	@Autowired
+	private VendorRepository vendorRepo;
+
+	@Override
+	public Vendor saveVendor(Vendor vendor) {
+		
+		Vendor vendorObj = vendorRepo.save(vendor);
+		
+		return vendorObj;
+	}
+
+	@Override
+	public List<Vendor> getAllVendors() {
+		
+		List<Vendor> vendorList = vendorRepo.findByStatus("A");
+		
+		return vendorList;
+	}
+
+	@Override
+	public Vendor getVendorById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vendor editVendorStatus(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

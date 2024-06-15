@@ -1,0 +1,53 @@
+package com.zettamine.boot.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.Material;
+import com.zettamine.boot.repository.MaterialRepository;
+
+@Service
+public class MaterialServiceImpl implements IMaterialService {
+
+	private MaterialRepository materialRepo;
+
+	@Autowired
+	public MaterialServiceImpl(MaterialRepository materialRepo) {
+		
+		this.materialRepo = materialRepo;
+	}
+
+	public MaterialServiceImpl() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public Material saveMaterial(Material material) {
+
+		MaterialServiceImpl matServiceObj = new MaterialServiceImpl();
+
+		String id = matServiceObj.materialIdGenerator();
+		material.setMaterialId(id);
+		material.setDesc(material.getDesc().toUpperCase().trim());
+
+		Material materialObj = materialRepo.save(material);
+
+		return materialObj;
+	}
+
+	private String materialIdGenerator() {
+		long count = materialRepo.count();
+
+		String c = "";
+
+		if (count > 9) {
+			c = Long.toString(count + 1);
+			return "M-" + c;
+
+		}
+		c = Long.toString(count + 1);
+		return "M-" + c;
+
+	}
+
+}

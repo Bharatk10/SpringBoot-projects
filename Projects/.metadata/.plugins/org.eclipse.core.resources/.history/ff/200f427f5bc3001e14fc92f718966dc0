@@ -1,0 +1,67 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.Plant;
+import com.zettamine.boot.repository.PlantRepository;
+
+@Service
+public class PlantServiceImpl implements IPlantService {
+
+	@Autowired
+	private PlantRepository PlantRepo;
+
+	@Override
+	public Plant savePlant(Plant Plant) {
+
+		Plant PlantObj = PlantRepo.save(Plant);
+
+		return PlantObj;
+	}
+
+	@Override
+	public List<Plant> getAllPlants() {
+		
+		Character ch = 'A';
+
+		List<Plant> PlantList = PlantRepo.findByStatus(ch);
+
+		return PlantList;
+	}
+
+	@Override
+	public Plant getPlantById(int id) {
+
+		Plant Plant = null;
+
+		Optional<Plant> PlantObj = PlantRepo.findById(id);
+		if (PlantObj.isPresent()) {
+			Plant = PlantObj.get();
+		}
+
+		return Plant;
+	}
+
+	@Override
+	public Plant editPlantStatus(int id) {
+
+		Plant Plant = null;
+
+		Optional<Plant> PlantObj = PlantRepo.findById(id);
+		
+		if(PlantObj.isPresent()) {
+			
+			Plant = PlantObj.get();
+			Plant.setStatus('I');
+			
+			Plant = PlantRepo.save(Plant);
+		}
+
+		return Plant;
+	}
+
+}

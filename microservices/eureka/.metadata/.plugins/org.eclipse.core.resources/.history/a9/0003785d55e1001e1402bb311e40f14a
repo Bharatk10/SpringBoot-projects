@@ -1,0 +1,18 @@
+package com.zettamine.accounts.service;
+
+import org.springframework.stereotype.Service;
+
+import com.zettamine.accounts.dto.CustomerDetailsDto;
+
+@Service
+public class CustomerDetailsServiceImpl implements ICustomerDetailsService{
+	
+	private 
+
+	@Override
+	public CustomerDetailsDto fetchCustomerDetails(String mobileNumber) {
+		
+		return null;
+	}
+
+}

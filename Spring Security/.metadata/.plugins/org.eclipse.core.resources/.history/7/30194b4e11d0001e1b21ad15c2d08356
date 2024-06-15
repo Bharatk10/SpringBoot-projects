@@ -1,0 +1,40 @@
+package com.zettamine.boot.security;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+
+	public static void main(String[] args) {
+
+		SpringApplication.run(Application.class, args);
+		
+		List<Integer> list = new ArrayList<>();
+		
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		
+		Iterator<Integer> iterator = list.iterator();
+		
+		while(iterator.hasNext()) {
+			int i = iterator.next();
+			if(i==1) {
+				
+				iterator.remove();
+			}
+
+		}
+		Iterator<Integer> printIterator = list.iterator();
+        while (printIterator.hasNext()) {
+            System.out.println(printIterator.next());
+        }
+		
+	}
+
+}

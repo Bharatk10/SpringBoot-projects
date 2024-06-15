@@ -1,0 +1,48 @@
+package com.zettamine.boot.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.zettamine.boot.constants.AppConstants;
+import com.zettamine.boot.entity.User;
+import com.zettamine.boot.entity.MaterialInspection;
+import com.zettamine.boot.service.IMaterialInspService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
+@Controller
+@RequestMapping("/zettaInsp")
+public class MaterialInspController {
+	
+	private IMaterialInspService matInspService;
+	
+	public MaterialInspController(IMaterialInspService matInspService) {
+		super();
+		this.matInspService = matInspService;
+	}
+
+
+
+	@GetMapping("/deletematInsp/{id}")
+	public String deleteDetails(@PathVariable("id") int id,HttpServletRequest request, Model model,MaterialInspection MaterialInspection) {
+
+		MaterialInspection MaterialInspectionObj = matInspService.editMaterialInspStatusBtId(id);
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		if (MaterialInspectionObj.getChannelId()!= null) {
+			model.addAttribute("message", "MaterialInspection Deleted succesfully");
+			return "viewMaterial";
+		} else {
+			model.addAttribute("message", "MaterialInspection Deleted Failed");
+			return AppConstants.MaterialInspection_VIEW;
+		}
+
+	}
+
+}

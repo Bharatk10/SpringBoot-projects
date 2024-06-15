@@ -1,0 +1,28 @@
+package com.zettamine.boot.service;
+
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.MaterialInspection;
+import com.zettamine.boot.repository.MatInspRepository;
+
+@Service
+public class MaterialInspServiceImpl implements IMaterialInspService {
+	
+	private MatInspRepository matInspRepo;
+	
+	public MaterialInspServiceImpl(MatInspRepository matInspRepo) {
+		super();
+		this.matInspRepo = matInspRepo;
+	}
+
+	@Override
+	public MaterialInspection saveMaterialInsp(MaterialInspection matInsp) {
+		
+		MaterialInspection matInspObj = null;
+		
+		 matInspObj = matInspRepo.save(matInsp);
+		
+		return matInspObj;
+	}
+
+}

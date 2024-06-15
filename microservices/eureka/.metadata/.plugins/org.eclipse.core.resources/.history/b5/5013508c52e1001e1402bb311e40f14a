@@ -1,0 +1,5 @@
+package com.zettamine.accounts.service.client;
+
+public interface CardsFeignClient {
+
+}

@@ -1,0 +1,6 @@
+package com.zettamine.boot.constants;
+
+public interface ValidationContsants {
+
+	public  static final  String BLANK_ERROR_MESSAGE ="The field cannot be left blank. Please enter the required information.";
+}

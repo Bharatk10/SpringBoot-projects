@@ -1,0 +1,34 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+
+import com.zettamine.boot.entity.Vendor;
+
+@Service
+public class VendorServiceImpl implements IVendorService {
+
+	@Override
+	public Vendor saveVendor(Vendor vendor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Vendor> getAllVendors() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vendor getVendorById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vendor editVendorStatus(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

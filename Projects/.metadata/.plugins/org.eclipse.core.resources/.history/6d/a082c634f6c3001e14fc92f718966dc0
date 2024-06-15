@@ -1,0 +1,63 @@
+package com.zettamine.boot.entity;
+
+
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "ISP_LOT")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class InspectionLot {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "lotid_generator")
+	@SequenceGenerator(name = "lotid_generator",sequenceName = "lot_id_sequence",initialValue = 4001,allocationSize = 1)
+	private Integer lotId;
+	
+	@OneToMany(mappedBy="inspectionLot", cascade= CascadeType.ALL)
+	private List<InspectionActuals> inspectionActuals = new ArrayList<>();
+	
+	@ManyToOne
+	@JoinColumn(name = "material_id", referencedColumnName = "materialId")
+	private Material material;
+	
+	@ManyToOne
+	@JoinColumn(name = "vendor_id", referencedColumnName = "vendorId")
+	private Vendor vendor;
+	
+	@ManyToOne
+	@JoinColumn(name = "plant_id", referencedColumnName = "plantId")
+	private Plant plant;
+	
+	private Date startDate;
+	
+	private Date endDate;
+	
+	private String result;
+	
+	private String remarks;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "userId")
+	private User user;
+
+}

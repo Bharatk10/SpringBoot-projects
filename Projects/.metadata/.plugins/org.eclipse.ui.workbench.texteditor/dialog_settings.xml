@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="wrap" value="false"/>
+		<item key="casesensitive" value="true"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<item key="selection" value="userRoleDto"/>
+		<list key="findhistory">
+			<item value="dto"/>
+			<item value="color:black;"/>
+			<item value="&quot;addActuals&quot;"/>
+			<item value="&quot;inspLot&quot;"/>
+			<item value="&quot;searchlot&quot;"/>
+			<item value="AppContants.VIEW_INSPT_VIEW"/>
+			<item value="&quot;viewinspection&quot;"/>
+			<item value="&quot;inspection&quot;"/>
+			<item value="HttpServletRequest request"/>
+			<item value="return AppConstants.LOGIN_VIEW;"/>
+			<item value=" model.addAttribute(&quot;message&quot;, &quot;Please Login&quot;);"/>
+			<item value=" if (!SessionUtils.isUserLoggedIn(session)) {"/>
+			<item value="if (!SessionUtils.isUserLoggedIn(session)) {"/>
+			<item value="initialPositions"/>
+			<item value="criteria"/>
+		</list>
+		<list key="replacehistory">
+			<item value="userRoleDto"/>
+			<item value=""/>
+			<item value="AppConstants.ADDACTUALS_VIEW"/>
+			<item value="AppConstants.SEARCHLOT_VIEW"/>
+			<item value="AppConstants.VIEW_INSPT_VIEW"/>
+			<item value="AppContants.VIEW_INSPT_VIEW"/>
+			<item value="AppContant"/>
+			<item value=" public static final String INSPECTIONLOT_VIEW ="/>
+			<item value="HttpSession session"/>
+			<item value="initPositions"/>
+			<item value="criteria"/>
+			<item value="lowerTollerance"/>
+			<item value="upperTollerance"/>
+			<item value="minMesurment"/>
+			<item value="maxMesurment"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="927"/>
+		<item key="DIALOG_Y_ORIGIN" value="228"/>
+		<item key="DIALOG_WIDTH" value="577"/>
+		<item key="DIALOG_HEIGHT" value="532"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="567"/>
+		<item key="DIALOG_Y_ORIGIN" value="314"/>
+	</section>
+</section>

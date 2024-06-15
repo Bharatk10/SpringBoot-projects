@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: underwriting
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:underwritingdb
+      username: admin
+      password: 123 
+
+server:
+  port: 8020
+eureka:
+ instance:
+  prefer-ip-address: true
+  appname: escrow
+ client:
+   fetch-registry: true
+   registerWithEureka: true
+   serviceUrl:
+      defaultZone: http://localhost:8080/eureka/

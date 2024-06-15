@@ -1,0 +1,18 @@
+package com.zettamine.order.service;
+
+import java.util.List;
+
+import com.zettamine.order.entity.Order;
+import com.zettamine.order.model.LineItem;
+
+public interface IOrderService {
+	
+	Order saveOrder(List<LineItem> items);
+	
+	Order updateOrder(List<LineItem> items);
+	
+	void deleteOrder(Integer id);
+	
+	Order getOrderById(Integer id);
+	
+}

@@ -1,0 +1,102 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<title>Material Inspection</title>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<style>
+.content {
+	max-width: 800px;
+	margin: 20px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+}
+
+label {
+	font-weight: bold;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin: 5px 0;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+</style>
+</head>
+
+<body>
+
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+
+	<div class="content">
+		<h1>Update Inspection Lot Form</h1>
+
+
+		<form th:action="@{/zettaInsp/submitInspLot}" th:object="${inspLot}"
+			method="post">
+
+			<input type="hidden" id="lotId" th:field="*{lotId}" /> 
+			<label for="materialId">Material Name:</label> 
+				<input type="text" readonly="readonly" th:field="*{material}" > 
+				<label for="vendorName">Vendor Name:</label> 
+				<input type="text" readonly="readonly" th:field="*{vendor}"  > 
+				<label for="plantName">Plant Name:</label>
+				<input type="text" readonly="readonly" th:field="*{plant}" > 
+				 <label for="createdOn">Lot created on:</label>
+
+				<input type="date" readonly th:field ="${createdOn}"> 
+		
+				
+
+			<div>
+
+				<button type="submit">Submit</button>
+
+
+				<button type="reset">Reset</button>
+
+				<button type="button" onclick="history.back()">Back</button>
+
+				<button type="button">
+					<a href="home">Home</a>
+				</button>
+			</div>
+
+		</form>
+
+	</div>
+
+</body>
+</html>

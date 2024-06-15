@@ -1,0 +1,39 @@
+services:
+  loan-product-ms-db:
+    image: postgres:latest
+    container_name: loan-product-ms-db
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: loan-product-ms-db
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "loan-product-ms-db"]
+      interval: 10s
+      timeout: 5s
+      retries: 1
+      start_period: 10s
+
+    networks:
+      - zettampa
+
+  loan-product-ms:
+    image: loan-product-ms
+    container_name: loan-product-ms
+    ports:
+      - "9010:9010"
+    environment:
+      SPRING_APPLICATION_NAME: "loan-product-ms"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://loan-product-ms-db:5432/loan-product-ms-db"
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: test
+    depends_on:
+      loan-product-ms-db:
+        condition: service_healthy
+    networks:
+      - zettampa
+
+networks:
+  zettampa:
+    driver: "bridge"

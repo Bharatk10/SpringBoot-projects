@@ -1,0 +1,88 @@
+package com.zettamine.mpa.escrow.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.zettamine.mpa.escrow.constants.EscrowConstants;
+import com.zettamine.mpa.escrow.constants.EscrowReqConstants;
+import com.zettamine.mpa.escrow.dto.EscrowReqDto;
+import com.zettamine.mpa.escrow.dto.ResponseDto;
+import com.zettamine.mpa.escrow.service.EscrowReqService;
+import com.zettamine.mpa.escrow.utils.StringUtil;
+import com.zettamine.mpa.exception.ResourceNotFoundException;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+
+@RestController
+@RequestMapping(path = "api/v1/escrow/requirements")
+@AllArgsConstructor
+@Validated
+@Tag(name = "Escrow Requirment Controller to manage the requirments for loan product", 
+description = "Requiremnet are those which the ecrow company has takecare of duering holding period")
+public class EscrowReqController {
+
+	private EscrowReqService escoReqService;
+	
+	@Operation(summary = "Add new Requirement",
+		       description = "Adding new requirement for escrow")
+	@ApiResponses(
+			  @ApiResponse(responseCode = "201",
+                 description = "New Requirement Created")
+			)
+	@PostMapping(path = "/create")
+	public ResponseEntity<ResponseDto> save(@RequestBody List<EscrowReqDto> reqList){
+		
+		for(EscrowReqDto requirment : reqList) {
+			requirment = StringUtil.formatEscrowReq(requirment);
+		}
+		escoReqService.save(reqList);
+		return ResponseEntity.status(HttpStatus.CREATED)
+							 .body(new ResponseDto(EscrowConstants.STATUS_201, EscrowReqConstants.SAVE_SUCCEESS));
+	}
+
+	@GetMapping(path = "/fetch")
+	public ResponseEntity<List<EscrowReqDto>> getAll() {
+		List<EscrowReqDto> reqList = escoReqService.getAll();
+		return ResponseEntity.status(HttpStatus.OK).body(reqList);
+	}
+
+	@GetMapping("/fetch-by-name/{reqName}")
+	public ResponseEntity<?> findByName(@PathVariable String reqName) {
+		String normalizeString = StringUtil.normalizeString(reqName);
+		EscrowReqDto reqByName = escoReqService.findByReqName(normalizeString);
+		if (reqByName != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(reqByName);
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(new ResponseDto(EscrowConstants.STATUS_404, EscrowReqConstants.NOT_FOUND));
+	}
+	
+	@PutMapping(path = "/update/{reqId}")
+	public ResponseEntity<ResponseDto> update(@PathVariable Integer reqId ,@Valid @RequestBody EscrowReqDto escoReqDto){
+		   escoReqDto = StringUtil.formatEscrowReq(escoReqDto);
+			EscrowReqDto reqById = escoReqService.findById(reqId);
+			if(reqById == null) {
+				throw new ResourceNotFoundException(EscrowReqConstants.UPDATE_FAILED);
+			}
+				escoReqDto.setReqId(reqId);
+				escoReqService.save(escoReqDto);
+				return ResponseEntity.status(HttpStatus.OK)
+									 .body(new ResponseDto(EscrowConstants.STATUS_200, EscrowReqConstants.UPDATE_SUCCESS));
+		}
+}

@@ -1,0 +1,223 @@
+package com.zettamine.boot.controller;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.zettamine.boot.entity.Material;
+import com.zettamine.boot.entity.MaterialInspection;
+import com.zettamine.boot.entity.User;
+import com.zettamine.boot.service.IInspActualService;
+import com.zettamine.boot.service.IInsptLotService;
+import com.zettamine.boot.service.IMaterialInspService;
+import com.zettamine.boot.service.IMaterialService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
+@Controller
+@RequestMapping("/zettaInsp")
+public class MaterialController {
+
+	private IMaterialService materialService;
+
+	@Autowired
+	private IMaterialInspService matInspService;
+	
+	@Autowired
+	private IInsptLotService inspLotService;
+	
+	private IInspActualService inspActService;
+	
+
+	public MaterialController(IMaterialService materialService,IInspActualService inspActService) {
+		super();
+		this.materialService = materialService;
+		this.inspActService = inspActService;
+	}
+
+	@GetMapping("/material")
+	public String getMaterialPage(HttpServletRequest request, Model model) {
+
+		HttpSession session = request.getSession(false);
+
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+
+		return "material";
+	}
+
+	@GetMapping("/addMaterial/{mId}")
+	public String getAddMaterialPage(@PathVariable("mId") String mId,HttpServletRequest request, Model model) {
+
+		HttpSession session = request.getSession(false);
+
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		if(mId.equals("add")) {
+			model.addAttribute("material", new Material());
+			model.addAttribute("message","Add Material Form");
+		}
+		else {
+			Material material = materialService.getMaterialById(mId);
+			model.addAttribute("material", material);
+			model.addAttribute("message","Update Material Form");
+		}
+		
+
+		return "addMaterial";
+	}
+
+	@PostMapping("/submitMaterial")
+	public String addMaterialDetails(HttpServletRequest request, Material material, Model model) {
+		
+		if(material.getMaterialId().isEmpty()) {
+			
+			String id = materialService.materialIdGenerator();
+			System.out.println("Add Method");
+			Material materialObj = materialService.saveMaterialById(material, id);
+			HttpSession session = request.getSession(false);
+			User user = (User) session.getAttribute("user");
+
+			model.addAttribute("userName", user.getUserName());
+			if (materialObj.getMaterialId() != null) {
+				
+				return "redirect:/zettaInsp/aMaterial";
+			} else {
+				model.addAttribute("message", "Material Added Failed");
+				return "material";
+			}
+		}
+		Material matObj = materialService.saveMaterial(material);
+		if(matObj.getMaterialId()!=null) {
+			
+			return "redirect:/zettaInsp/uMaterial";
+		}
+		else {
+			model.addAttribute("message", "Material Updated Failed");
+			return "material";
+		}
+
+
+		
+
+	}
+	@GetMapping("/aMaterial")
+	public String getVendorHomePage(HttpServletRequest request,Model model) {
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		model.addAttribute("message", "Material Added succesfully");
+		
+		return "material";
+		
+	}
+	@GetMapping("/uMaterial")
+	public String getMaterialHomePage(HttpServletRequest request,Model model) {
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		model.addAttribute("message", "Material Updated succesfully");
+		
+		return "material";
+		
+	}
+
+	@GetMapping("/materials")
+	public String getallMaterials(Model model, HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		List<Material> materialList = materialService.getAllMaterials();
+		model.addAttribute("materialList", materialList);
+		model.addAttribute("userName", user.getUserName());
+		return "material";
+	}
+
+	@GetMapping("/addcharateristics/{mId}")
+	public String getAddV(@PathVariable("mId") String mId, HttpServletRequest request, Model model) {
+
+		HttpSession session = request.getSession(false);
+
+		User user = (User) session.getAttribute("user");
+		
+		Material material = materialService.getMaterialById(mId);
+
+		model.addAttribute("userName", user.getUserName());
+		MaterialInspection matInsp = new MaterialInspection();
+		matInsp.setMaterial(material);
+		model.addAttribute("matInsp", matInsp);
+
+		return "addMatParameters";
+	}
+
+	@PostMapping("/submitMatInsp")
+	public String getMatInspFormData(MaterialInspection matInsp,Model model) {
+		
+		MaterialInspection matInspObj = matInspService.saveMaterialInsp(matInsp);
+		
+		if(matInspObj.getMaterial() == null) {
+			model.addAttribute("failmessage", "Material Characteristics added failed");
+		}
+		
+		String mId = matInspObj.getMaterial().getMaterialId();
+		
+		
+		
+		return "redirect:/zettaInsp/addMatInsp/"+mId;
+
+	}
+	@GetMapping("/addMatInsp/{mId}")
+	public String getaddParametersPage(@PathVariable("mId") String mId, HttpServletRequest request, Model model) {
+		
+		HttpSession session = request.getSession(false);
+
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		
+		model.addAttribute("message","Material charcaters added Successfully");
+		Material material = materialService.getMaterialById(mId);
+		MaterialInspection matInsp = new MaterialInspection();
+		matInsp.setMaterial(material);
+		model.addAttribute("matInsp", matInsp);
+		return "addMatParameters";
+		
+	}
+	@GetMapping("/viewmaterial/{mId}")
+	public String getMaterialData(@PathVariable("mId") String mId, HttpServletRequest request, Model model) {
+
+		HttpSession session = request.getSession(false);
+
+		User user = (User) session.getAttribute("user");
+		
+		model.addAttribute("userName", user.getUserName());
+		Material material = materialService.getMaterialById(mId);
+		
+				
+		List<MaterialInspection> materalInsp = material.getMatInsp().stream()
+                 .filter(matInsp -> 'A'==(matInsp.getStatus())).sorted((o1, o2) -> o1.getChannelId()-o2.getChannelId())
+                 .collect(Collectors.toList());
+		
+		material.setMatInsp(materalInsp);
+		
+		model.addAttribute("material", material);
+
+		return "viewMaterial";
+	}
+	
+	
+	
+}

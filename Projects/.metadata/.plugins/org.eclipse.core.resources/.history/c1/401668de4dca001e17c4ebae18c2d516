@@ -1,0 +1,45 @@
+package com.zettamine.boot.service;
+
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.User;
+import com.zettamine.boot.repository.UserRepository;
+import com.zettamine.boot.utility.StringUtilis;
+
+@Service
+public class UserServiceImpl implements IUserService {
+	
+	private UserRepository userRepo;
+	
+	public UserServiceImpl(UserRepository userRepo) {
+		super();
+		this.userRepo = userRepo;
+	}
+
+	@Override
+	public Boolean validateUserCredintials(String userName, String password) {
+
+		Optional<User> optUser = userRepo.findByUserNameAndPassword(StringUtilis.processString(userName),StringUtilis.processString(password));
+		if(optUser.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public User getUserDetailsByUserName(String userName) {
+		
+		Optional<User> optUser = userRepo.findByUserName(userName);
+		if(optUser.isPresent()) {
+			return optUser.get();
+		}
+		return null;
+	}
+
+
+
+
+
+}

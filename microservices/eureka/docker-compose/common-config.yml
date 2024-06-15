@@ -1,0 +1,32 @@
+services:
+  network-deploy-service:
+    networks:
+      - zettabank
+
+  microservice-base-config:
+    extends:
+      service: network-deploy-service
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    environment:
+      SPRING_RABBITMQ_HOST: rabbit
+
+  microservice-configserver-config:
+    extends:
+      service: microservice-base-config
+    depends_on:
+      config-server:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://config-server:7000/"
+
+  microservice-eureka-config:
+    extends:
+      service: microservice-configserver-config
+    depends_on:
+      config-server:
+        condition: service_healthy
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/eureka/

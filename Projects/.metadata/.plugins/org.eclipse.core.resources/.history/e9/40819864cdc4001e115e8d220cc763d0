@@ -1,0 +1,16 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+
+import com.zettamine.boot.entity.InspectionLot;
+import com.zettamine.boot.models.InspLotModel;
+
+public interface IInsptLotService {
+	
+	InspectionLot saveInspLot(InspectionLot inspLot,String status);
+	
+	List<InspectionLot> getAllInspectionLots();
+	
+	List<InspLotModel> getInspectionLots(List<InspectionLot> inspLots);
+
+}

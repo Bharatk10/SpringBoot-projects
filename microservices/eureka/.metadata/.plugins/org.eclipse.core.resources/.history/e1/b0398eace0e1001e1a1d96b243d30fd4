@@ -1,0 +1,23 @@
+spring:
+  config:
+    import:
+      "optional:configserver:http://localhost:7000/"
+   
+  application:
+   name: "eurekaserver"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+   health:
+    probes:
+     enabled: true
+
+  health:
+   readinessstate:
+    enabled: true
+   livenessstate:
+    enabled: true
+  

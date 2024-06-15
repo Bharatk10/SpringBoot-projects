@@ -1,0 +1,28 @@
+package com.zettamine.boot.cms.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.zettamine.boot.cms.entities.Contact;
+
+public interface ContactRepository extends JpaRepository<Contact, Integer> {
+
+	Contact findByContactName(String cname);
+
+	Contact findByContactNumber(String cno);
+
+	Contact findByContactNameAndContactNumber(String cname, String cno);
+
+	List<Contact> findByContactNameOrContactNumber(String cname, String cno);
+	
+	void deleteByContactName(String cname);
+	
+	//@Query("from Contact where mod(contactId,2)=0")
+	@Query(value = "select * from Contact where contact_id%2 ==0", nativeQuery=true)
+	List<Contact> findEvenId();
+
+
+
+}

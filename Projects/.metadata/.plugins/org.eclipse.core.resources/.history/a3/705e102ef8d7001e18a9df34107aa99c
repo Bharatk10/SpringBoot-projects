@@ -1,0 +1,23 @@
+package com.zettamine.boot.models;
+
+import java.sql.Date;
+import java.time.LocalDate;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class InspLotSearchCriteria {
+	
+	private LocalDate fromDate;
+
+	private LocalDate toDate;
+	private String materialId;
+	private String plantId;
+	private Integer vendorId;
+	private String status;
+}

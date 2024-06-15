@@ -1,0 +1,45 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.InspectionActuals;
+import com.zettamine.boot.entity.Material;
+import com.zettamine.boot.repository.InspectionActualsRepo;
+import com.zettamine.boot.repository.MaterialRepository;
+
+@Service
+public class InspActualServiceImpl implements IInspActualService {
+	
+	private InspectionActualsRepo inspActRepo;
+	
+	private MaterialRepository materialRepo;
+
+	public InspActualServiceImpl(InspectionActualsRepo inspActRepo) {
+		super();
+		this.inspActRepo = inspActRepo;
+	}
+
+	@Override
+	public InspectionActuals saveInspectionActuals(InspectionActuals inspAct) {
+		
+		InspectionActuals inspActObj = null;
+		
+		inspActObj = inspActRepo.save(inspAct);
+		
+		return inspActObj;
+	}
+
+	@Override
+	public InspectionActuals saveInspectionActualsByLotId(Integer lotId, String materialId) {
+		
+		List<Integer> channelIdsList = 
+				
+	
+	
+		
+		return null;
+	}
+
+}

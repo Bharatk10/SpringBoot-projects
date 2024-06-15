@@ -1,0 +1,64 @@
+package com.zettamine.mpa.lpm.model;
+
+import java.util.List;
+import com.zettamine.mpa.lpm.constants.PatternConstants;
+import com.zettamine.mpa.lpm.constants.ValidationConstants;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+
+@Data
+public class LoanProductDto {
+	
+	@NotBlank(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	@Pattern(regexp = PatternConstants.STRING_PATTERN,message  = ValidationConstants.STRING_PATTERN_ERROR_MESSAGE)
+	private String productName;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Float intrestRate;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Integer loanTerm;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Double maxLoanAmount;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Float minDownPayment;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private float minDownPaymentType;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Integer minCreditScore;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Integer maxLoanToValueRatio;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Boolean privateMortgageInsuranceReq;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Float orginationFee;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Integer lockinPeriod;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Double minPenalityAmount;
+	
+	@NotNull(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private Float penalityPercentage;
+	
+	@NotBlank(message = ValidationConstants.BLANK_ERROR_MESSAGE)
+	private String documentRequirement;
+	
+	private List<String> escrowRequirements;
+	
+	private List<String> propertyRestrictionTypes;
+	
+	private List<String> underWritingCriteria;
+	
+}

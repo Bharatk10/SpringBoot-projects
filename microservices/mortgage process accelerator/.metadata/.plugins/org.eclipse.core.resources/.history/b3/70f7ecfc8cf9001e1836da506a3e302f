@@ -1,0 +1,15 @@
+server.port=9040
+spring.application.name=escrow-company
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/mortgage_process_accelerator?currentSchema=mpa
+spring.datasource.username=postgres
+spring.datasource.password=Home23
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=update
+
+logging.file.name=logs/escrow.log
+logging.level.root=INFO
+logging.logback.rollingpolicy.max-file-size=2Mb
+

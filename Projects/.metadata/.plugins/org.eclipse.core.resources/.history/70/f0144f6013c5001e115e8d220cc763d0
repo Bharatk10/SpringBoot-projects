@@ -1,0 +1,55 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.InspectionActuals;
+import com.zettamine.boot.entity.InspectionLot;
+import com.zettamine.boot.repository.InspectionActualsRepo;
+import com.zettamine.boot.repository.InspectionLotRepository;
+import com.zettamine.boot.repository.MatInspRepository;
+
+@Service
+public class InspActualServiceImpl implements IInspActualService {
+	
+	
+	private InspectionActualsRepo inspActRepo;
+	
+	@Autowired
+	private MatInspRepository matInspRepo;
+	
+	@Autowired
+	private InspectionLotRepository inspLotRepo;
+
+	public InspActualServiceImpl(InspectionActualsRepo inspActRepo) {
+		super();
+		this.inspActRepo = inspActRepo;
+	}
+
+	@Override
+	public InspectionActuals saveInspectionActuals(InspectionActuals inspAct) {
+		
+		InspectionActuals inspActObj = null;
+		
+		inspActObj = inspActRepo.save(inspAct);
+		
+		return inspActObj;
+	}
+
+	@Override
+	public void saveInspActBasedonLotId(Integer lotId) {
+		
+		List<Integer> channelIds = null;
+		Optional<InspectionLot> optInspLot = inspLotRepo.findById(lotId);
+		
+		if(optInspLot.isPresent()) {
+			optInspLot.get().getMaterial();
+		}
+		
+	}
+
+	
+}

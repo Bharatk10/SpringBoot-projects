@@ -1,0 +1,15 @@
+package com.zettamine.boot.repository;
+
+import java.util.TreeSet;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.zettamine.boot.entity.MaterialInspection;
+
+public interface MatInspRepository extends JpaRepository<MaterialInspection, Integer> {
+
+	TreeSet<String> findByMaterialDesc();
+	
+}

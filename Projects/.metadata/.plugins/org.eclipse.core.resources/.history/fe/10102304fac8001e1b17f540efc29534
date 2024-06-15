@@ -1,0 +1,544 @@
+package com.zettamine.boot.controller;
+
+import java.util.List;
+import java.util.TreeSet;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.zettamine.boot.constants.AppConstants;
+import com.zettamine.boot.entity.InspectionActuals;
+import com.zettamine.boot.entity.InspectionLot;
+import com.zettamine.boot.entity.Material;
+import com.zettamine.boot.entity.MaterialInspection;
+import com.zettamine.boot.entity.Plant;
+import com.zettamine.boot.entity.User;
+import com.zettamine.boot.entity.Vendor;
+import com.zettamine.boot.models.InspLotSearchCriteria;
+import com.zettamine.boot.service.IInspActualService;
+import com.zettamine.boot.service.IInsptLotService;
+import com.zettamine.boot.service.IMaterialInspService;
+import com.zettamine.boot.service.IMaterialService;
+import com.zettamine.boot.service.IPlantService;
+import com.zettamine.boot.service.IVendorService;
+import com.zettamine.boot.utility.SessionUtils;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
+@Controller
+@RequestMapping("/zettaInsp")
+public class InspectionLotController {
+
+	private IInsptLotService insplotService;
+
+	@Autowired
+	private IMaterialService materialService;
+
+	@Autowired
+	private IVendorService vendorService;
+
+	@Autowired
+	private IPlantService plantService;
+
+	@Autowired
+	private IInspActualService inspActService;
+
+	@Autowired
+	private IMaterialInspService matInspService;
+
+	public InspectionLotController(IInsptLotService insplotService) {
+		super();
+		this.insplotService = insplotService;
+	}
+
+	@GetMapping("/inspLot")
+	public String getMaterialInspectionPage(HttpSession session, Model model) {
+
+		 if (!SessionUtils.isUserLoggedIn(session)) {
+	            model.addAttribute("message", "Please Login");
+	            return AppConstants.LOGIN_VIEW;
+	        }
+
+		 String userName = SessionUtils.getLoggedInUsername(session);
+	        model.addAttribute("userName", userName);
+
+		return AppConstants.INSPECTIONLOT_VIEW;
+	}
+
+	@GetMapping("/inspection")
+	public String getInspectionPage(HttpSession session, Model model) {
+		 if (!SessionUtils.isUserLoggedIn(session)) {
+	            model.addAttribute("message", "Please Login");
+	            return AppConstants.LOGIN_VIEW;
+	        }
+
+		 String userName = SessionUtils.getLoggedInUsername(session);
+	        model.addAttribute("userName", userName);
+
+		return "inspection";
+	}
+
+	@GetMapping("/addInspLot")
+	public String getInspLotPage(HttpSession session, Model model) {
+
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+	 
+      
+		TreeSet<String> materialNames = materialService.getAllMaterialNames();
+		TreeSet<String> VendorNames = vendorService.getAllVendorNames();
+		TreeSet<String> plantNames = plantService.getAllPlantINames();
+
+		  model.addAttribute("userName", userName);
+		model.addAttribute("materialNameList", materialNames);
+		model.addAttribute("vendorNameList", VendorNames);
+		model.addAttribute("plantNameList", plantNames);
+		model.addAttribute("inspLot", new InspectionLot());
+
+		return AppConstants.ADDINSPLOT_VIEW;
+	}
+
+	@PostMapping("/submitinspLot")
+	public String addInspLot(InspectionLot InspLot, Model model, @RequestParam("materialName") String matrialName,
+			@RequestParam("vendorName") String vendorName, @RequestParam("plantName") String plantName,
+			@RequestParam("startInspection") String status) {
+		
+		 if (!SessionUtils.isUserLoggedIn(session)) {
+	            model.addAttribute("message", "Please Login");
+	            return AppConstants.LOGIN_VIEW;
+	        }
+
+		 String userName = SessionUtils.getLoggedInUsername(session);
+	        model.addAttribute("userName", userName);
+
+		Material material = materialService.getMaterialByName(matrialName);
+		InspLot.setMaterial(material);
+		Vendor vendor = vendorService.getVendorByName(vendorName);
+		InspLot.setVendor(vendor);
+
+		Plant plant = plantService.getPantByName(plantName);
+		InspLot.setPlant(plant);
+		InspectionLot inspLotObj = insplotService.saveInspLotWithStatus(InspLot, status);
+
+		if (inspLotObj.getLotId() != null) {
+
+			return "redirect:/zettaInsp/aInspLot";
+		}
+
+		return AppConstants.INSPECTIONLOT_VIEW;
+
+	}
+
+	@GetMapping("/aInspLot")
+	public String getVendorHomePage(HttpSession session,Model model) {
+		 if (!SessionUtils.isUserLoggedIn(session)) {
+	            model.addAttribute("message", "Please Login");
+	            return AppConstants.LOGIN_VIEW;
+	        }
+
+		 String userName = SessionUtils.getLoggedInUsername(session);
+	        model.addAttribute("userName", userName);
+		model.addAttribute("message", "Inspection Lot Added succesfully");
+
+		return AppConstants.INSPECTIONLOT_VIEW;
+
+	}
+
+	@GetMapping("/insplots")
+	public String getAlllots(HttpSession session, Model model) {
+
+		 if (!SessionUtils.isUserLoggedIn(session)) {
+	            model.addAttribute("message", "Please Login");
+	            return AppConstants.LOGIN_VIEW;
+	        }
+
+		 String userName = SessionUtils.getLoggedInUsername(session);
+	       
+		List<InspectionLot> inspLots = insplotService.getAllInspectionLots();
+
+		 model.addAttribute("userName", userName);
+		model.addAttribute("inspLots", inspLots);
+		return "viewinspection";
+	}
+
+	@GetMapping("/editinspLot/{id}")
+	public String getViewInspLotPage(HttpSession session, Model model,@PathVariable("id") Integer id) {
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+
+		InspectionLot inspLot = insplotService.getInspectionLotById(id);
+
+		if (inspLot.getStartDate() != null) {
+
+			if (inspLot.getResult() == null) {
+
+				model.addAttribute("failmessage", "Lot inspection started.You can't edit Lot Details");
+				return "viewinspection";
+
+			}
+
+			else if (inspLot.getResult().equalsIgnoreCase("Pass")) {
+				model.addAttribute("failmessage", "Lot inspection completed.You can't edit Lot Details");
+				return "viewinspection";
+			} else {
+				
+				model.addAttribute("inspLot", inspLot);
+
+				return "updateInspLot";
+			}
+
+		}
+		if(inspLot.getMaterial().getMatInsp().size()==0) {
+			
+			model.addAttribute("failmessage", "Before starting Inspection add Material Characteristics for material "+inspLot.getMaterial().getDesc());
+			return "viewinspection";
+		}
+
+
+		model.addAttribute("inspLot", inspLot);
+
+		return "updateInspLot";
+	}
+
+	@PostMapping("/submitInsplot")
+	public String updateInspLot(HttpSession session, InspectionLot inspLot, Model model) {
+		
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+
+		User user = (User) session.getAttribute("user");
+
+		InspectionLot saveInspLot = insplotService.saveInspLot(inspLot);
+
+		model.addAttribute("userName", user.getUserName());
+		if (saveInspLot.getLotId() != null) {
+
+			model.addAttribute("message", "Lot updated Successfully");
+			return AppConstants.INSPECTIONLOT_VIEW;
+		}
+
+		model.addAttribute("message", "Lot not updated");
+
+		return AppConstants.INSPECTIONLOT_VIEW;
+	}
+
+	@GetMapping("/addinspactuals/{lotId}")
+	public String addInspectActuals(@PathVariable("lotId") Integer lotId, HttpSession session, Model model) {
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+
+		InspectionLot inspLot = insplotService.getInspectionLotById(lotId);
+
+		if (inspLot.getStartDate() != null) {
+			String mId = inspLot.getMaterial().getMaterialId();
+			List<MaterialInspection> matInspList = matInspService.getAllCharcateristicsById(mId);
+			List<InspectionActuals> inspActList = inspLot.getInspectionActuals();
+
+			if (matInspList.isEmpty()) {
+
+				model.addAttribute("failmessage", "The Material characteristoics has not added.");
+				return "viewinspection";
+			}
+
+			matInspList = insplotService.getMaterialInspectionList(matInspList, inspActList);
+			if (matInspList.size() == 0) {
+				model.addAttribute("failmessage", "The Material charcateristics are addded.");
+				return "viewinspection";
+			}
+			model.addAttribute("inspLot", inspLot);
+			model.addAttribute("inspActual", new InspectionActuals());
+			model.addAttribute("matInspList", matInspList);
+			model.addAttribute("addactual",true);
+			return "addActuals";
+
+		}
+
+		model.addAttribute("failmessage", "The inspection has not started yet");
+
+		return "viewinspection";
+
+	}
+
+	@PostMapping("/submitmatact")
+	public String addActuals(@RequestParam("lotId") Integer lotId, @RequestParam("materialInsp") Integer matInspId,
+			@RequestParam("maxMesurment") float maxMeasurement, @RequestParam("minMesurment") float minMeasurement,
+			Model model,HttpSession session) {
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+
+		InspectionLot inspLot = insplotService.getInspectionLotById(lotId);
+
+		MaterialInspection matInsp = matInspService.getMaterialInspStatus(matInspId);
+
+		InspectionActuals inspActual = new InspectionActuals(inspLot, matInsp, maxMeasurement, minMeasurement);
+		InspectionActuals inspActualObj = inspActService.saveInspectionActuals(inspActual);
+		
+		
+
+		if (inspActualObj == null) {
+			model.addAttribute("message", "Inspection actual added failed");
+			return "viewinspection";
+		}
+		String mId = inspLot.getMaterial().getMaterialId();
+		List<MaterialInspection> matInspList = matInspService.getAllCharcateristicsById(mId);
+		List<InspectionActuals> inspActList = inspLot.getInspectionActuals();
+
+		matInspList = insplotService.getMaterialInspectionList(matInspList, inspActList);
+		if (matInspList.size() == 0) {
+
+			Boolean result = insplotService.generateInspLotResult(inspLot);
+			User user = (User)session.getAttribute("user");
+			
+			System.out.println(user);
+			
+			insplotService.saveInspLot(inspLot, result,user);
+
+		}
+		return "redirect:/zettaInsp/addactuals";
+	}
+	@GetMapping("/addactuals")
+	public String addInspectActual(HttpSession session, Model model) {
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+
+		model.addAttribute("message", "Inspection actual added successfully");
+
+		return "viewinspection";
+
+	}
+	@GetMapping("/inspProgress")
+	public String getAllInspectlots(HttpSession session, Model model) {
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+
+
+		List<InspectionLot> inspLots = insplotService.getInspectionLotsWithStartDateNotNull();
+
+
+		model.addAttribute("inspLots", inspLots);
+		return "viewinspection";
+	}
+	@GetMapping("/inspcompleted")
+	public String getAllInspectcompletedLots(HttpSession session, Model model) {
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+
+		List<InspectionLot> inspLots = insplotService.getInspectionLotsWithRemarksNotNull();
+
+		
+		model.addAttribute("inspLots", inspLots);
+		return "viewinspection";
+	}
+	@GetMapping("/viewActuals/{lotId}")
+	public String getActuals(@PathVariable Integer lotId,Model model,HttpSession session) {
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+		
+		InspectionLot inspLot = insplotService.getInspectionLotById(lotId);
+			
+		model.addAttribute("inspLot", inspLot);
+		model.addAttribute("displaylot", true);
+		return "addActuals";
+	}
+	
+	@GetMapping("/approve/{lotId}")
+	public String approveLot(@PathVariable Integer lotId,Model model,HttpSession session) {
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+		
+		InspectionLot inspLot = insplotService.getInspectionLotById(lotId);
+			
+		model.addAttribute("inspLot", inspLot);
+		model.addAttribute("displaylot", true);
+		model.addAttribute("approve", true);
+		return "addActuals";
+	}
+	@GetMapping("/viewresult/{lotId}")
+	public String viewstatusOfLot(@PathVariable Integer lotId,Model model,HttpSession session) {
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+		
+		InspectionLot inspLot = insplotService.getInspectionLotById(lotId);
+			
+		model.addAttribute("inspLot", inspLot);
+		model.addAttribute("displaylot", true);
+		model.addAttribute("result",true);
+		
+		return "addActuals";
+	}
+	
+	@PostMapping("/submitlot")
+	public String submitLot(InspectionLot inspLot,HttpSession session,Model model) {
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+		
+		User user = (User) session.getAttribute("user");
+		
+		
+		System.out.println("Testing USER OBJ"+user);
+	
+		inspLot.setUser(user);
+		
+		System.out.println(inspLot);
+			
+		InspectionLot inspLotObj = insplotService.saveInspLot(inspLot);
+		if(inspLotObj.getRemarks()!=null) {
+			model.addAttribute("message", "InspectionLot updated  successfully");
+
+			return "viewinspection";
+
+		}
+		model.addAttribute("message", "InspectionLot updated  failed");
+
+		return "viewinspection";
+	}
+	@GetMapping("/searchLot")
+	public String getSearchLotPage(Model model,HttpSession session) {
+		
+		if (!SessionUtils.isUserLoggedIn(session)) {
+            model.addAttribute("message", "Please Login");
+            return AppConstants.LOGIN_VIEW;
+        }
+
+	 String userName = SessionUtils.getLoggedInUsername(session);
+        model.addAttribute("userName", userName);
+		
+	
+		model.addAttribute("search",true);
+		
+		return "inspLot";
+	}
+	
+////	@GetMapping("/searchbylotid")
+	public String getSearchByIdPage(Model model) {
+
+		model.addAttribute("searchById",true);
+		
+		return "searchlot";
+	}
+	@GetMapping("/search")
+	public String getSearchPage(Model model,InspLotSearchCriteria criteria) {
+
+		model.addAttribute("search",true);
+		model.addAttribute("criteria", criteria);
+		
+		return "searchlot";
+	}
+	
+	@PostMapping("/getinsplot")
+	public String getLotDetails(Model model,@RequestParam("lotId") Integer lotId) {
+
+		InspectionLot inspLot = insplotService.getInspectionLotById(lotId);
+		
+		if(inspLot == null) {
+			model.addAttribute("failmessage","The inspection LotId "+lotId+" you have entered is InValid.Please Try Again");
+			return "inspLot";
+		}
+		if(inspLot.getResult()!=null) {
+			model.addAttribute("result", true);
+			model.addAttribute("displaylot", true);
+		}
+		if(inspLot.getInspectionActuals().size()>0) {
+			
+			model.addAttribute("displaylot", true);
+		}
+		model.addAttribute("inspLot", inspLot);
+		return "addActuals";
+	}
+	
+	@PostMapping("/getinsplots")
+	public String getLotsDetails(Model model,InspLotSearchCriteria criteria) {
+		
+		List<InspectionLot> inspLots = insplotService.getInspectionLotWithCreatedDate(criteria);
+		
+		model.addAttribute("inspLots", inspLots);
+		if(inspLots.size()==0) {
+			model.addAttribute("failmessage", "Based on that search criteria no Inspection Lots are present");
+		}
+	
+		return "viewinspection";
+		
+		
+	}
+	
+	
+
+
+
+}

@@ -1,0 +1,6 @@
+package com.zettamine.boot.models;
+
+
+public class InspLotModel {
+
+}

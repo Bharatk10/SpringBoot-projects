@@ -1,0 +1,21 @@
+package com.zettamine.mpa.escrow.dto;
+
+import java.util.List;
+
+import com.zettamine.mpa.escrow.constants.EscrowReqLoanProdConstants;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
+public class AddLoanReqDto {
+	
+	@NotNull(message = EscrowReqLoanProdConstants.LOAN_ID_REQUIRED)
+	private Integer prodId;
+	
+	@NotNull(message = EscrowReqLoanProdConstants.REQ_ID_REQUIRED)
+	private List<String> requirments;
+	
+
+}

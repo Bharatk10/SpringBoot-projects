@@ -1,0 +1,135 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<title>inspLot Inspection</title>
+
+<style>
+#inspLotTable {
+	width: 100%;
+	margin-top: 20px;
+	border-collapse: collapse;
+}
+
+#inspLotTable th, #inspLotTable td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+#inspLotTable th {
+	background-color: #f2f2f2;
+}
+
+@media ( max-width : 600px) {
+	#inspLotTable {
+		font-size: 14px;
+	}
+}
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+img{
+width:20px
+}
+</style>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+
+	<div class="content">
+		<button type="button" onclick="history.back()">Back</button>
+	
+		
+<h3 style="z-index:100; color: green ;text-align:center" th:text=${message}></h3>
+<h3 style="z-index:100; color: red ;text-align:center" th:text=${failmessage}></h3>
+		<table id="inspLotTable" class="table"
+			th:if="${not #lists.isEmpty(inspLots)}">
+			<thead>
+				<tr>
+					<th>Lot ID</th>
+					<th>Material Name</th>
+					<th>Vendor Name</th>
+					<th>Plant Name</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr th:each="inspLot : ${inspLots}">
+					<td th:text="${inspLot.lotId}"></td>
+					<td th:text="${inspLot.material.desc}"></td>
+					<td th:text="${inspLot.vendor.vendorName}"></td>
+					<td th:text="${inspLot.plant.plantName}"></td>
+				
+					<td><!-- <a
+						th:href="@{editinspLot/{lotId}(lotId = ${inspLot.lotId})}"><i
+							class="fas fa-edit"></i></a> &nbsp;&nbsp; 
+							<a style=" text-decoration: none" th:href="@{'addinspactuals/' + ${inspLot.lotId}}">
+							
+    <img src="../../../images/addicon.jpg">
+</a>&nbsp;&nbsp;
+					<a style="color:green; text-decoration: none" th:href="@{viewinspLot/{lotId}(lotId = ${inspLot.lotId})}">
+						<i class="fa-regular fa-eye"></i></a> -->
+						<th:block th:if="${inspLot.startDate == null }">
+						 <a
+						th:href="@{editinspLot/{lotId}(lotId = ${inspLot.lotId})}"><button style="background-color:red">Start Insp</button></a>
+						
+						</th:block>
+				<th:block th:if="${inspLot.startDate != null}">
+						<th:block th:if="${inspLot.inspectionActuals.size>0}">
+						 <a
+						th:href="@{viewActuals/{lotId}(lotId = ${inspLot.lotId})}"><button style="background-color:cyan;color:black;">View Actuals</button></a>
+						</th:block>
+						<th:block th:if="${inspLot.material.matInsp.size > 0}">
+						<th:block th:if="${inspLot.inspectionActuals.size == 0 || inspLot.inspectionActuals.size<inspLot.material.matInsp.size}">
+						 <a
+						th:href="@{addinspactuals/{lotId}(lotId = ${inspLot.lotId})}"><button style="background-color:violet;color:black;">Add Actuals</button></a>
+						</th:block>
+						</th:block>
+				</th:block>	
+				<th:block th:if="${inspLot.startDate == null}">
+				<th:block th:if="${inspLot.material.matInsp.size == 0 }">
+				
+						 <a
+						th:href="@{addcharateristics/{mId}(mId = ${inspLot.material.materialId})}"><button style="background-color:yellow;color:black;">Add Mat chars</button></a>
+				</th:block>
+				</th:block>
+						<th:block th:if="${inspLot.result=='FAIL'}">
+						 <a
+						th:href="@{viewActuals/{lotId}(lotId = ${inspLot.lotId})}"><button style="background-color:orange;color:black;">Mark for approval</button></a>
+						</th:block>
+						
+						<th:block th:if="${inspLot.result=='PASS'}">
+						 <a
+						th:href="@{viewActuals/{lotId}(lotId = ${inspLot.lotId})}"><button >View Status</button></a>
+						</th:block>
+						
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

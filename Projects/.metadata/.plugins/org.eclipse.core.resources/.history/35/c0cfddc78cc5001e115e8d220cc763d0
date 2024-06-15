@@ -1,0 +1,86 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.InspectionActuals;
+import com.zettamine.boot.entity.InspectionLot;
+import com.zettamine.boot.entity.MaterialInspection;
+import com.zettamine.boot.repository.InspectionActualsRepo;
+import com.zettamine.boot.repository.InspectionLotRepository;
+import com.zettamine.boot.repository.MatInspRepository;
+
+@Service
+public class InspActualServiceImpl implements IInspActualService {
+	
+	
+	private InspectionActualsRepo inspActRepo;
+	
+	@Autowired
+	private MatInspRepository matInspRepo;
+
+	
+	@Autowired
+	private InspectionLotRepository inspLotRepo;
+	
+	
+
+	public InspActualServiceImpl(InspectionActualsRepo inspActRepo) {
+		super();
+		this.inspActRepo = inspActRepo;
+	}
+
+	@Override
+	public InspectionActuals saveInspectionActuals(InspectionActuals inspAct) {
+		
+		InspectionActuals inspActObj = null;
+		
+		inspActObj = inspActRepo.save(inspAct);
+		
+		return inspActObj;
+	}
+
+	@Override
+	public void saveInspActBasedonLotId(Integer lotId) {
+		
+		
+		Optional<InspectionLot> optInspLot = inspLotRepo.findById(lotId);
+		
+		if(optInspLot.isPresent()) {
+			List<MaterialInspection> matInspList = optInspLot.get().getMaterial().getMatInsp().stream()
+	                 .filter(matInsp -> 'A'==(matInsp.getStatus())).sorted((o1, o2) -> o1.getChannelId()-o2.getChannelId())
+	                 .collect(Collectors.toList());
+			for (MaterialInspection matInsp : matInspList) {
+				
+				InspectionActuals inspAct = new InspectionActuals(optInspLot.get(),matInsp);
+				inspActRepo.save(inspAct);
+			}
+		}
+		
+	}
+
+	@Override
+	public void InspActBasedonChannelId(MaterialInspection matInsp) {
+		
+		InspectionLot inspLot;
+		
+		String matId = matInsp.getMaterial().getMaterialId();
+		
+		
+		
+			if(inspLot.getResult() == null && inspLot.getStartDate()!=null) {
+				
+				inspActRepo.save(new InspectionActuals(inspLot,matInsp));
+				
+			}
+		
+		
+	}
+
+	
+}

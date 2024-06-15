@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete 7 elements from project &apos;loans-microservices&apos;&#x0D;&#x0A;- Original project: &apos;loans-microservices&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     generated-sources&#x0D;&#x0A;     generated-test-sources&#x0D;&#x0A;     jib-cache&#x0D;&#x0A;     maven-status&#x0D;&#x0A;     jib-image.digest&#x0D;&#x0A;     jib-image.id&#x0D;&#x0A;     jib-image.json" description="Delete elements" element1="target/generated-test-sources" element2="target/jib-image.digest" element3="target/generated-sources" element4="target/jib-image.json" element5="target/maven-status" element6="target/jib-cache" element7="target/jib-image.id" elements="0" flags="589830" id="org.eclipse.jdt.ui.delete" resources="7" stamp="1710261465926" subPackages="false" version="1.0"/>
+</session>

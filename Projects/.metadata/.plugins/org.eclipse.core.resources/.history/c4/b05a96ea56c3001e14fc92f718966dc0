@@ -1,0 +1,66 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.Vendor;
+import com.zettamine.boot.repository.VendorRepository;
+
+@Service
+public class VendorServiceImpl implements IVendorService {
+
+	@Autowired
+	private VendorRepository vendorRepo;
+
+	@Override
+	public Vendor saveVendor(Vendor vendor) {
+
+		Vendor vendorObj = vendorRepo.save(vendor);
+
+		return vendorObj;
+	}
+
+	@Override
+	public List<Vendor> getAllVendors() {
+		
+		Character ch = 'A';
+
+		List<Vendor> vendorList = vendorRepo.findByStatus(ch);
+
+		return vendorList;
+	}
+
+	@Override
+	public Vendor getVendorById(int id) {
+
+		Vendor vendor = null;
+
+		Optional<Vendor> vendorObj = vendorRepo.findById(id);
+		if (vendorObj.isPresent()) {
+			vendor = vendorObj.get();
+		}
+
+		return vendor;
+	}
+
+	@Override
+	public Vendor editVendorStatus(int id) {
+
+		Vendor vendor = null;
+
+		Optional<Vendor> vendorObj = vendorRepo.findById(id);
+		
+		if(vendorObj.isPresent()) {
+			
+			vendor = vendorObj.get();
+			vendor.setStatus('I');
+			
+		}
+
+		return vendor;
+	}
+
+}

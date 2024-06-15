@@ -1,0 +1,18 @@
+package com.zettamine.boot.aop;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class ProductServiceAspect {
+	
+	@Before(value = "execution(* com.zettamine.boot.aop.service.ProductServices.*(..)) and args(productId, productName, productPrice)")
+	public void beforeAdvice(JoinPoint joinPoint, Integer productId, String productName, Float productPrice) {  
+		System.out.println("Before method with arguments:" + joinPoint.getSignature());  
+		System.out.println(String.format("Creating Product with %d, %s, %.2f",productId, productName, productPrice));  
+	}
+
+}

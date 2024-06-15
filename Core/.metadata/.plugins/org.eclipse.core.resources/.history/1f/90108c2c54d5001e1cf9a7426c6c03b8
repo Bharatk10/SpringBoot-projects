@@ -1,0 +1,17 @@
+package com.zettamine.boot.aop.controller;
+
+import com.zettamine.boot.aop.service.ProductService;
+
+public class ProductController {
+	
+	
+	private ProductService prodService;
+
+	public ProductController(ProductService prodService) {
+		super();
+		this.prodService = prodService;
+	}
+	
+	
+
+}

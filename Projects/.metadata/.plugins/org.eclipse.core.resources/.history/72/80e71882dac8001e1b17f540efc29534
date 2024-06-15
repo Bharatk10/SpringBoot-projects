@@ -1,0 +1,64 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.MaterialInspection;
+import com.zettamine.boot.repository.MatInspRepository;
+
+@Service
+public class MaterialInspServiceImpl implements IMaterialInspService {
+	
+	private MatInspRepository matInspRepo;
+	
+	public MaterialInspServiceImpl(MatInspRepository matInspRepo) {
+		super();
+		this.matInspRepo = matInspRepo;
+	}
+
+	@Override
+	public MaterialInspection saveMaterialInsp(MaterialInspection matInsp) {
+		
+		MaterialInspection matInspObj = null;
+		
+		matInsp.setChannelDescription(matInsp.getChannelDescription().trim().toUpperCase());
+		matInsp.setUms(matInsp.getUms().trim().toUpperCase());
+		
+		matInsp.setStatus('A');
+		
+		 matInspObj = matInspRepo.save(matInsp);
+		
+		return matInspObj;
+	}
+
+	@Override
+	public MaterialInspection editMaterialInspStatusBtId(int id) {
+		
+		MaterialInspection matInsp = null;
+		
+		Optional<MaterialInspection> optMatInsp = matInspRepo.findById(id);
+		if(optMatInsp.isPresent()) {
+			matInsp = optMatInsp.get();
+			matInsp.setStatus('I');
+		}
+		matInsp = matInspRepo.save(matInsp);
+		return matInsp;
+	}
+
+	@Override
+	public List<MaterialInspection> getAllCharcateristicsById(String matId) {
+		
+		List<MaterialInspection> matInspList = matInspRepo.findMaterialInspectionByMaterialId(matId);
+		return matInspList;
+	}
+
+	@Override
+	public MaterialInspection getMaterialInspStatus(int id) {
+		
+		MaterialInspection matInsp = matInspRepo.findById(id).get();
+		return matInsp;
+	}
+
+}

@@ -1,0 +1,16 @@
+console: ''
+database-platform: org.hibernate.dialect.H2Dialect
+datasource: ''
+ddl-auto: update
+driver-class-name: org.h2.Driver
+enabled: true
+h2: ''
+hibernate: ''
+jpa: ''
+password: 1234
+settings: ''
+show-sql: true
+spring: ''
+url: jdbc:h2:mem:accountsdb
+username: admin
+web-allow-others: true

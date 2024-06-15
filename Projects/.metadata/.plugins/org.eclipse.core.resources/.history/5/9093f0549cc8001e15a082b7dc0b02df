@@ -1,0 +1,136 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<title>Material Inspection</title>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<style>
+.content {
+	max-width: 800px;
+	margin: 20px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+}
+
+label {
+	font-weight: bold;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin: 5px 0;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+</style>
+</head>
+
+<body>
+
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+
+	<div class="content">
+		<h1 th:text=${message}></h1>
+
+<th:block th:if="${searchById}">
+		<form th:action="@{/zettaInsp/getinsplot}" method="post">
+
+			<label for="id">Enter Inspection Lot Id:</label>
+			 <input type="number" name="lotId"  required>
+			<button type="submit">Submit</button>
+			<button type="reset">Reset</button>
+			<button type="button" onclick="history.back()">Back</button>
+			
+			</form>
+			</th:block>
+			
+			<th:block th:if ="${search}">
+			
+			<form th:action="@{/zettaInsp/getinsplots}" th:object="${criteria}" method="post">
+
+			<label for="from date">Inspection date</label>
+			 <input type="date" name="fromDate" th:field="*{fromDate}" placeholder="from Date" required>
+			 
+			 <label></label>
+			  <input type="date" th:field="*{toDate}" placeholder="to Date"  required>
+			  <label for="materialId">Material Id</label>
+			 <input type="text" th:field="*{materialId}">
+			 <label for="materialId">Plant Id</label>
+			 <input type="text" th:field="*{plantId}">
+			 <label for="vendorId">Vendor Id</label>
+			 <input type="text" th:field="*{vendorId}">
+			 
+			     <label for="status">Status:</label>
+    <select th:field="*{status}">
+        <option value="">Select Status</option>
+        <option value="PASS">PASS</option>
+        <option value="FAIL">FAIL</option>
+        <option value="UNDER INSPECTION">UNDER INSPECTION</option>
+        <option value="INSPECTION NOT STARTED">INSPECTION NOT STARTED</option>
+    </select>
+			<button type="submit">Submit</button>
+			<button type="reset">Reset</button>
+			<button type="button" onclick="history.back()">Back</button>
+			
+			</form>
+			</th:block>
+	</div>
+	
+	<script>
+
+var createdOnStr = document.getElementById('createdOn').value; // Assuming you have an input with 'createdOn' ID
+
+var createdOnDate = new Date(createdOnStr);
+
+console.log('Created On Date:', createdOnDate);
+
+    document.getElementById('startDate').addEventListener('input', function() {
+        var startDate = new Date(this.value);
+        var currentDate = new Date();
+
+        console.log('Start Date:', startDate);
+        console.log('Current Date:', currentDate);
+        console.log('Created On Date:', createdOnDate);
+
+        if (startDate > currentDate) {
+            this.setCustomValidity('Start date cannot be in the future.');
+        } else if (startDate < createdOnDate) {
+            this.setCustomValidity('Start date cannot be before the created date.');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+</script>
+</body>
+</html>

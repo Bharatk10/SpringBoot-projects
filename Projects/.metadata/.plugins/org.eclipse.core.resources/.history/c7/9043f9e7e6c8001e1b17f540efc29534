@@ -1,0 +1,303 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<title>Material Inspection</title>
+
+<style>
+.content {
+	max-width: 800px;
+	margin: 20px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#matInspTable {
+	width: 100%;
+	margin-top: 20px;
+	border-collapse: collapse;
+}
+
+#matInspTable th, #matInspTable td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+#matInspTable th {
+	background-color: #f2f2f2;
+}
+
+@media ( max-width : 600px) {
+	#matInspTable {
+		font-size: 14px;
+	}
+}
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+
+
+.material-features {
+    background-color: #fff;
+    width:650px;
+    margin-left:19%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center; 
+}
+
+.feature-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    margin-bottom: 10px;
+}
+
+.feature-label {
+    font-weight: bold;
+    width: 200px;
+    text-align: left; /* Align the label text to the left */
+}
+
+.feature-value {
+    flex-grow: 1;
+    text-align: left; /* Align the value text to the left */
+}
+.material-features{
+transform: scale(1.05);
+	background: linear-gradient(45deg, #77d1e1, #3c3c3d);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+	
+}
+.feature-value{
+	color:white
+}
+form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+}
+
+label {
+	font-weight: bold;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin: 5px 0;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+
+
+</style>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+<br>
+<br>
+		 <div class="material-features">
+        <div class="feature-item">
+            <div class="feature-label">Inspection Lot Id:</div>
+            <div class="feature-value" th:text =${inspLot.lotId} ></div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-label">Material Description:</div>
+            <div class="feature-value" th:text =${inspLot.material.desc}></div>
+        </div>
+         <div class="feature-item">
+            <div class="feature-label">Vendor Name:</div>
+            <div class="feature-value" th:text =${inspLot.vendor.vendorName}></div>
+        </div>
+         <div class="feature-item">
+            <div class="feature-label">Plant Name:</div>
+            <div class="feature-value" th:text =${inspLot.plant.plantName}></div>
+        </div>
+         <div class="feature-item">
+            <div class="feature-label">Lot Created On:</div>
+            <div class="feature-value" th:text =${inspLot.createdOn}></div>
+        </div>
+          <th:block th:if="${inspLot.startDate!=null}">
+         <div class="feature-item">
+            <div class="feature-label">Inspection Started On:</div>
+            <div class="feature-value" th:text =${inspLot.startDate}></div>
+        </div>
+       
+         </th:block>
+        <th:block th:if="${result} or ${approve}">
+         <div class="feature-item">
+            <div class="feature-label">Inspection Ended On:</div>
+            <div class="feature-value" th:text =${inspLot.endDate}></div>
+        </div>
+        
+        <div class="feature-item">
+            <div class="feature-label">Status:</div>
+            <div class="feature-value" th:text =${inspLot.result} th:style = "${inspLot.result} == 'FAIL' ? 'color:red':'color:green'"></div>
+        </div>
+        
+        </th:block>
+         <th:block th:if="${inspLot.result == null && inspLot.startDate !=null } ">
+         <div class="feature-item">
+            <div class="feature-label">Status:</div>
+            <div class="feature-value" style ="color:red">The Inspection is going on</div>
+        </div>
+         </th:block>
+         <th:block th:if="${inspLot.startDate == null } ">
+         <div class="feature-item">
+            <div class="feature-label">Status:</div>
+            <div class="feature-value" style ="color:red">The Inspection not yet started</div>
+        </div>
+         </th:block>
+        <th:block th:if="${result} ">
+         <div class="feature-item">
+            <div class="feature-label">Inspection Remarks:</div>
+            <div class="feature-value" style="margin-left:100px" th:text =${inspLot.remarks}></div>
+        </div>
+        
+        <div class="feature-item">
+            <div class="feature-label">Inspection Done By:</div>
+            <div class="feature-value" th:text =${inspLot.user.userName}></div>
+        </div>
+        
+        </th:block>
+   </div>
+   
+   <th:block th:if="${addactual}">
+   
+   <div class="content">
+   <form th:action="@{/zettaInsp/submitmatact}"  method="post">
+
+			<input type="hidden" id="lotId" name = "lotId" th:value="${inspLot.lotId}" />
+			<label for="materialInsp">Channel Description:</label>
+        <select  id="materialInsp" name ="materialInsp"  required>
+            <option value="">Select Material Description</option>
+           
+                <option th:each="matInsp : ${matInspList}" th:value="${matInsp.channelId}" th:text="${matInsp.channelDescription}" ></option>
+        </select>
+        
+         <label for="maxMesurment">Max Measurement:</label>
+        <input type="text"  id="maxMesurment" name="maxMesurment" required />
+        
+         <label for="minMesurment">Min Measurement:</label>
+        <input type="text"  id="minMesurment" name="minMesurment" required />
+        
+			 <div>
+        
+        <button type="submit">Submit</button>
+
+       
+        <button type="reset">Reset</button>
+
+       
+         <button type="button"> <a href="/zettaInsp/inspLot">Back</a></button>
+
+       
+        <button type="button" ><a href="/zettaInsp">Home</a></button>
+      
+    </div>
+		</form>
+		 </div>
+   		  </th:block>
+	</th:block>
+	
+	<th:block th:if="${displaylot}">
+    <div class="content">
+        <table id="matInspTable" class="table" th:if="${not #lists.isEmpty(inspLot.inspectionActuals)}">
+            <thead>
+                <tr>
+                    <th>S.N.O</th>
+                    <th>Channel_description</th>
+                    <th th:if="${approve} or ${result}">Upper Tolerance</th>
+                    <th>Maximum measurement</th>
+                    <th th:if="${approve} or ${result}">Lower Tolerance</th>
+                    <th>Minimum measurement</th>
+                    <th>UMS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="inspActual, iterStat: ${inspLot.inspectionActuals}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${inspActual.matInsp.channelDescription}"></td>
+                    <th th:if="${approve} or ${result}" th:text="${inspActual.matInsp.upperTollerance}"></th>
+                    <td th:text="${inspActual.maxMesurment}" th:style="${inspActual.maxMesurment > inspActual.matInsp.upperTollerance ? 'color:red' : ''}"></td>
+                    <th th:if="${approve} or ${result}" th:text="${inspActual.matInsp.lowerTollerance}"></th>
+                    <td th:text="${inspActual.minMesurment}" th:style="${inspActual.minMesurment < inspActual.matInsp.lowerTollerance ? 'color:red' : ''}"></td>
+                    <td th:text="${inspActual.matInsp.ums}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</th:block>
+	
+	 <th:block th:if="${approve}">
+   
+   <div class="content">
+   <form th:action="@{/zettaInsp/submitlot}" method="post">
+
+<input type="hidden" id="lotId" name = "lotId" th:field="*{inspLot.lotId}" />
+
+<input type="hidden"  th:field="*{inspLot.material}" />
+<input type="hidden"  th:field="*{inspLot.plant}" />
+<input type="hidden"  th:field="*{inspLot.vendor}" />
+<input type="hidden"  th:field="*{inspLot.createdOn}" />
+<input type="hidden"  th:field="*{inspLot.startDate}" />
+<input type="hidden"  th:field="*{inspLot.endDate}" />
+		<div>
+        <label for="result">Result:</label>
+        <input type="text"  name="result" th:field ="*{inspLot.result}" required>
+    </div>
+    <div>
+        <label for="remarks">Remarks :</label>
+        <textarea  name="remarks" rows="4" cols="50" th:field ="*{inspLot.remarks}" required="required"></textarea>
+    </div>
+     
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button> 
+        
+    </form>   
+    </div>
+    </th:block>
+</body>
+</html>

@@ -1,0 +1,28 @@
+package com.zettamine.boot.repository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.TreeSet;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.zettamine.boot.entity.Material;
+
+public interface MaterialRepository extends JpaRepository<Material,String> {
+
+	@Query("from Material order by materialId")
+	List<Material> findAllOrderByMaterialId();
+	
+	@Query("SELECT  m.desc FROM Material m")
+    TreeSet<String> findAllMaterialName();
+	
+	
+	Optional<Material> findByDesc(String materialName);
+
+	@Query(value = "select material_id from material order by material_id desc limit 1",nativeQuery = true)
+	String findHighestMaterialId();
+
+	Optional<Material> findByDescAndMaterialIdNot(String desc, String materialId);
+
+}

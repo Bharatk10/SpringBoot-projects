@@ -1,0 +1,48 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.Vendor;
+import com.zettamine.boot.repository.VendorRepository;
+
+@Service
+public class VendorServiceImp implements IVendorService {
+ 
+	private VendorRepository vendorRepo;
+
+	public VendorServiceImp(VendorRepository vendorRepo) {
+		super();
+		this.vendorRepo = vendorRepo;
+	}
+
+	@Override
+	public Vendor saveVendor(Vendor vendor) {
+
+		vendor.setVendorName(vendor.getVendorName().toUpperCase());
+		vendor.setVendorEmail(vendor.getVendorEmail().toUpperCase());
+		vendor.setLocation(vendor.getLocation().toUpperCase());
+		
+		vendor.setStatus('A');
+
+		Vendor vendorObj = vendorRepo.save(vendor);
+
+		return vendorObj;
+	}
+
+	@Override
+	public List<Vendor> getAllVendors() {
+		
+	 List<Vendor> vendors = vendorRepo.findAll();
+		return vendors;
+	}
+
+	@Override
+	public Vendor updateVendorById(int id) {
+
+		vendorRepo.findById()
+		return null;
+	}
+
+}

@@ -1,0 +1,24 @@
+package com.zettamine.boot.utility;
+
+
+
+import jakarta.servlet.http.HttpSession;
+
+public class SessionUtils {
+	
+	 public static boolean isUserLoggedIn( HttpSession session) {
+	      
+	        return session != null && session.getAttribute("user") != null;
+	 }
+	 public static String getLoggedInUsername(HttpSession session) {
+	       
+	        if (session != null) {
+	            User user = (User) session.getAttribute("user");
+	            if (user != null) {
+	                return user.getUserName();
+	            }
+	        }
+	        return null;
+	    }
+
+}

@@ -1,0 +1,136 @@
+package com.zettamine.boot.controller;
+
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.zettamine.boot.entity.User;
+import com.zettamine.boot.entity.Plant;
+import com.zettamine.boot.service.IPlantService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
+@Controller
+@RequestMapping("/zettaInsp")
+public class PlantController {
+
+	private IPlantService plantService;
+
+	public PlantController(IPlantService plantService) {
+		super();
+		this.plantService = plantService;
+	}
+
+	@GetMapping("/plant")
+	public String getPlantPage(HttpServletRequest request, Model model) {
+
+		HttpSession session = request.getSession(false);
+
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+
+		return "plant";
+	}
+
+	@GetMapping("/addPlant")
+	public String getAddPlantPage(HttpServletRequest request, Model model) {
+
+		HttpSession session = request.getSession(false);
+
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		model.addAttribute("plant", new Plant());
+
+		return "addPlant";
+	}
+
+	@PostMapping("/submitPlant")
+	public String addPlantDetails(HttpServletRequest request, Plant plant, Model model) {
+
+		Plant plantObj = plantService.savePlant(plant);
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		if (plantObj.getPlantId() != null) {
+			model.addAttribute("message", "Plant Added succesfully");
+			return "plant";
+		} else {
+			model.addAttribute("message", "Plant Added Failed");
+			return "plant";
+		}
+
+	}
+
+	@GetMapping("/plants")
+	public String getallPlants(Model model, HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		List<Plant> plantList = plantService.getAllPlants();
+		model.addAttribute("plantList", plantList);
+		model.addAttribute("userName", user.getUserName());
+		return "plant";
+	}
+
+	@GetMapping("/update/{id}")
+	public String getUpdatePlantPage(@PathVariable("id") Integer id, Model model, HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		Plant plant = plantService.getPlantById(id);
+
+		model.addAttribute("plant", plant);
+
+		model.addAttribute("userName", user.getUserName());
+		
+		return "updatePlantForm";
+
+	}
+	@PostMapping("/updatePlant")
+	public String upadtePlantDetails(HttpServletRequest request, Plant plant, Model model) {
+
+		Plant plantObj = plantService.savePlant(plant);
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		if (plantObj.getPlantId() != null) {
+			model.addAttribute("message", "Plant Update succesfully");
+			return "plant";
+		} else {
+			model.addAttribute("message", "Plant Update Failed");
+			return "plant";
+		}
+
+	}
+	@GetMapping("/delete/{id}")
+	public String deleteDetails(@PathVariable("id") int id,HttpServletRequest request, Model model,Plant plant) {
+
+		Plant plantObj = plantService.editPlantStatus(id);
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		if (plantObj.getPlantId() != null) {
+			model.addAttribute("message", "Plant Update succesfully");
+			return "plant";
+		} else {
+			model.addAttribute("message", "Plant Update Failed");
+			return "plant";
+		}
+
+	}
+	
+
+}

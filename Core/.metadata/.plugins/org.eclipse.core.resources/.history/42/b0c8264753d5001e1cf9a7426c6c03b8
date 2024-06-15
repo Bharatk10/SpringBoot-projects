@@ -1,0 +1,5 @@
+package com.zettamine.boot.aop.entity;
+
+public class Product {
+
+}

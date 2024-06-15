@@ -1,0 +1,96 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.TreeSet;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.Material;
+import com.zettamine.boot.repository.MaterialRepository;
+
+@Service
+public class MaterialServiceImpl implements IMaterialService {
+
+	@Autowired
+	private MaterialRepository materialRepo;
+
+	
+
+	@Override
+	public Material saveMaterialById(Material material,String id) {
+
+		material.setMaterialId(id);
+		material.setDesc(material.getDesc().toUpperCase().trim());
+		material.setMaterialType(material.getMaterialType().toUpperCase().trim());
+
+		Material materialObj = materialRepo.save(material);
+
+		return materialObj;
+	}
+	@Override
+	public String materialIdGenerator() {
+		long count = materialRepo.count();
+
+		String c = "";
+
+		if (count > 9) {
+			c = Long.toString(count + 1);
+			return "M-" + c;
+
+		}
+		c = Long.toString(count + 1);
+		return "M-0" + c;
+		
+	}
+	@Override
+	public List<Material> getAllMaterials() {
+		
+		
+		List<Material> materials = materialRepo.findAllOrderByMaterialId();
+		return materials;
+	}
+	@Override
+	public Material getMaterialById(String id) {
+		
+		Material material = null;
+		Optional<Material> optMaterial = materialRepo.findById(id);
+		
+		if(optMaterial.isPresent()) {
+			material = optMaterial.get();
+		}
+		
+		return material;
+	}
+	
+	@Override
+	public Material saveMaterial(Material material) {
+		
+		Material matObj = null;
+		
+		 matObj = materialRepo.save(material);
+		 
+		return matObj;
+	}
+	@Override
+	public TreeSet<String> getAllMaterialNames() {
+		
+		TreeSet<String> materialNames = materialRepo.findAllMaterialName();
+		return materialNames;
+	}
+	@Override
+	public Material getMaterialByName(String materialName) {
+		Optional<Material> OptMaterial = materialRepo.findByDesc(materialName);
+		
+		Material material = null;
+		
+		if(OptMaterial.isPresent()) {
+			
+			material =  OptMaterial.get();
+		}
+		
+		return material;
+	}
+
+}

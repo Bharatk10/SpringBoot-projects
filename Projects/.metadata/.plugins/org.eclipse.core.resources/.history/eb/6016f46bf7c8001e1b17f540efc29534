@@ -1,0 +1,14 @@
+package com.zettamine.boot.utility;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
+import jakarta.servlet.http.HttpSession;
+
+public class SessionUtils {
+	
+	 public static boolean isUserLoggedIn( HttpSession session) {
+	      
+	        return session != null && session.getAttribute("user") != null;
+	    }
+
+}

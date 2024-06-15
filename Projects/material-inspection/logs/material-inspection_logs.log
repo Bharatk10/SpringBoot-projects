@@ -1,0 +1,63 @@
+2024-05-03 16:03:26 - Starting MaterialInspectionApplication using Java 17.0.9 with PID 27532 (D:\Zettamine\Spring Boot\Projects\material-inspection\target\classes started by Bharat Kumar in D:\Zettamine\Spring Boot\Projects\material-inspection)
+2024-05-03 16:03:26 - No active profile set, falling back to 1 default profile: "default"
+2024-05-03 16:03:26 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-05-03 16:03:26 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-05-03 16:03:27 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-03 16:03:28 - Finished Spring Data repository scanning in 212 ms. Found 7 JPA repository interfaces.
+2024-05-03 16:03:29 - Tomcat initialized with port 8080 (http)
+2024-05-03 16:03:29 - Starting service [Tomcat]
+2024-05-03 16:03:29 - Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-05-03 16:03:29 - Initializing Spring embedded WebApplicationContext
+2024-05-03 16:03:29 - Root WebApplicationContext: initialization completed in 3288 ms
+2024-05-03 16:03:29 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-03 16:03:30 - HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-05-03 16:03:30 - HHH000026: Second-level cache disabled
+2024-05-03 16:03:30 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-03 16:03:30 - HikariPool-1 - Starting...
+2024-05-03 16:03:31 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4eaf29b2
+2024-05-03 16:03:31 - HikariPool-1 - Start completed.
+2024-05-03 16:03:33 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-03 16:03:34 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03 16:03:34 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-03 16:03:35 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-03 16:03:35 - Adding welcome page: class path resource [static/index.html]
+2024-05-03 16:03:36 - LiveReload server is running on port 35729
+2024-05-03 16:03:36 - Tomcat started on port 8080 (http) with context path ''
+2024-05-03 16:03:36 - Started MaterialInspectionApplication in 11.865 seconds (process running for 13.812)
+2024-05-03 16:03:39 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-05-03 16:03:39 - Initializing Servlet 'dispatcherServlet'
+2024-05-03 16:03:39 - Completed initialization in 4 ms
+2024-05-03 16:03:49 - Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [140] milliseconds.
+2024-05-03 16:03:49 - *** the user is verified ***
+2024-05-03 16:09:15 - [THYMELEAF][http-nio-8080-exec-7][material] Deprecated attribute {th:include,data-th-include} found in template material, line 61, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:15 - [THYMELEAF][http-nio-8080-exec-7][material] Deprecated unwrapped fragment expression "home :: nav" found in template material, line 61, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: nav}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:15 - [THYMELEAF][http-nio-8080-exec-7][material] Deprecated attribute {th:include,data-th-include} found in template material, line 62, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:15 - [THYMELEAF][http-nio-8080-exec-7][material] Deprecated unwrapped fragment expression "home :: sid" found in template material, line 62, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: sid}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:19 - [THYMELEAF][http-nio-8080-exec-2][viewMaterial] Deprecated attribute {th:include,data-th-include} found in template viewMaterial, line 100, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:19 - [THYMELEAF][http-nio-8080-exec-2][viewMaterial] Deprecated unwrapped fragment expression "home :: nav" found in template viewMaterial, line 100, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: nav}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:19 - [THYMELEAF][http-nio-8080-exec-2][viewMaterial] Deprecated attribute {th:include,data-th-include} found in template viewMaterial, line 101, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:19 - [THYMELEAF][http-nio-8080-exec-2][viewMaterial] Deprecated unwrapped fragment expression "home :: sid" found in template viewMaterial, line 101, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: sid}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:25 - [THYMELEAF][http-nio-8080-exec-10][addMatParameters] Deprecated attribute {th:include,data-th-include} found in template addMatParameters, line 69, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:25 - [THYMELEAF][http-nio-8080-exec-10][addMatParameters] Deprecated unwrapped fragment expression "home :: nav" found in template addMatParameters, line 69, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: nav}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:25 - [THYMELEAF][http-nio-8080-exec-10][addMatParameters] Deprecated attribute {th:include,data-th-include} found in template addMatParameters, line 70, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:25 - [THYMELEAF][http-nio-8080-exec-10][addMatParameters] Deprecated unwrapped fragment expression "home :: sid" found in template addMatParameters, line 70, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: sid}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:36 - [THYMELEAF][http-nio-8080-exec-10][viewinspection] Deprecated attribute {th:include,data-th-include} found in template viewinspection, line 62, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:36 - [THYMELEAF][http-nio-8080-exec-10][viewinspection] Deprecated unwrapped fragment expression "home :: nav" found in template viewinspection, line 62, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: nav}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:36 - [THYMELEAF][http-nio-8080-exec-10][viewinspection] Deprecated attribute {th:include,data-th-include} found in template viewinspection, line 63, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:36 - [THYMELEAF][http-nio-8080-exec-10][viewinspection] Deprecated unwrapped fragment expression "home :: sid" found in template viewinspection, line 63, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: sid}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:39 - [THYMELEAF][http-nio-8080-exec-5][addActuals] Deprecated attribute {th:include,data-th-include} found in template addActuals, line 142, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:39 - [THYMELEAF][http-nio-8080-exec-5][addActuals] Deprecated unwrapped fragment expression "home :: nav" found in template addActuals, line 142, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: nav}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:39 - [THYMELEAF][http-nio-8080-exec-5][addActuals] Deprecated attribute {th:include,data-th-include} found in template addActuals, line 143, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:39 - [THYMELEAF][http-nio-8080-exec-5][addActuals] Deprecated unwrapped fragment expression "home :: sid" found in template addActuals, line 143, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: sid}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:58 - [THYMELEAF][http-nio-8080-exec-2][viewinspection] Deprecated attribute {th:include,data-th-include} found in template viewinspection, line 62, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:58 - [THYMELEAF][http-nio-8080-exec-2][viewinspection] Deprecated unwrapped fragment expression "home :: nav" found in template viewinspection, line 62, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: nav}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:58 - [THYMELEAF][http-nio-8080-exec-2][viewinspection] Deprecated attribute {th:include,data-th-include} found in template viewinspection, line 63, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:09:58 - [THYMELEAF][http-nio-8080-exec-2][viewinspection] Deprecated unwrapped fragment expression "home :: sid" found in template viewinspection, line 63, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: sid}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:10:11 - [THYMELEAF][http-nio-8080-exec-1][viewinspection] Deprecated attribute {th:include,data-th-include} found in template viewinspection, line 62, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:10:11 - [THYMELEAF][http-nio-8080-exec-1][viewinspection] Deprecated unwrapped fragment expression "home :: nav" found in template viewinspection, line 62, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: nav}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:10:11 - [THYMELEAF][http-nio-8080-exec-1][viewinspection] Deprecated attribute {th:include,data-th-include} found in template viewinspection, line 63, col 7. Please use {th:insert,data-th-insert} instead, this deprecated attribute will be removed in future versions of Thymeleaf.
+2024-05-03 16:10:11 - [THYMELEAF][http-nio-8080-exec-1][viewinspection] Deprecated unwrapped fragment expression "home :: sid" found in template viewinspection, line 63, col 7. Please use the complete syntax of fragment expressions instead ("~{home :: sid}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.
+2024-05-03 16:12:12 - Application shutdown requested.
+2024-05-03 16:12:12 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03 16:12:12 - HikariPool-1 - Shutdown initiated...
+2024-05-03 16:12:12 - HikariPool-1 - Shutdown completed.

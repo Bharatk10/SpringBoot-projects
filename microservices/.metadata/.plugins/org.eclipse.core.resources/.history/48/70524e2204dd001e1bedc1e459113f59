@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    password: 1234
+    url: jdbc:h2:mem:accountsdb
+    username: admin
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+build:
+  version: 1.0
+
+accounts:
+  message: "Welcome to ZettaBank accounts related APIs"
+  contactDetails:
+    name: "Bharat Kumar - Developer"
+    email: "bharatkumar@zettabank.com"
+  onCallSupport:
+    - (32) 123-45343
+    - (34) 456-13432

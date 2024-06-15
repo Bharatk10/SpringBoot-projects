@@ -1,0 +1,6 @@
+package com.zettamine.boot.service;
+
+public interface IMaterialService {
+	
+
+}

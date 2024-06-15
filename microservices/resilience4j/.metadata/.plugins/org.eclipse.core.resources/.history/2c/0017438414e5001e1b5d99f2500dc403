@@ -1,0 +1,14 @@
+package com.zettamine.accounts.service.client;
+
+import org.springframework.http.ResponseEntity;
+
+import com.zettamine.accounts.dto.CardsDto;
+
+public class CardsFallBack implements CardsFeignClient {
+
+	@Override
+	public ResponseEntity<CardsDto> fetchCardDetails(String mobileNumber) {
+		return null;
+	}
+
+}

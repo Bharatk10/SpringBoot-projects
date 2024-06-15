@@ -1,0 +1,14 @@
+package com.zettamine.accounts.service.client;
+
+import org.springframework.http.ResponseEntity;
+
+import com.zettamine.accounts.dto.LoansDto;
+
+public class LoansFallBack implements LoansFeignClient {
+
+	@Override
+	public ResponseEntity<LoansDto> fetchLoanDetails(String mobileNumber) {
+		return null;
+	}
+
+}

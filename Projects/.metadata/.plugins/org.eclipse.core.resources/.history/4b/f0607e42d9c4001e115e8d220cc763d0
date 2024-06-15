@@ -1,0 +1,38 @@
+package com.zettamine.boot.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.zettamine.boot.constants.AppConstants;
+import com.zettamine.boot.entity.User;
+import com.zettamine.boot.entity.Vendor;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
+@Controller
+@RequestMapping("/zettaInsp")
+public class MaterialInspController {
+	
+	@GetMapping("/deletematInsp/{id}")
+	public String deleteDetails(@PathVariable("id") int id,HttpServletRequest request, Model model,Vendor vendor) {
+
+		Vendor vendorObj = vendorService.editVendorStatus(id);
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		if (vendorObj.getVendorId() != null) {
+			model.addAttribute("message", "Vendor Deleted succesfully");
+			return AppConstants.VENDOR_VIEW;
+		} else {
+			model.addAttribute("message", "Vendor Deleted Failed");
+			return AppConstants.VENDOR_VIEW;
+		}
+
+	}
+
+}

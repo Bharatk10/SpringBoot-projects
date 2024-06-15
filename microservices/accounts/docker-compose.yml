@@ -1,0 +1,37 @@
+services:
+  accounts:
+    image: "bharatkumaradapa/docker-accounts:1.0"
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - zettabank
+  loans:
+    image: "bharatkumaradapa/loans:v1"
+    container_name: loans-ms
+    ports:
+      - "9080:8081"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - zettabank
+  cards:
+    image: "bharatkumaradapa/cards-microservice:v1"
+    container_name: cards-ms
+    ports:
+      - "7080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - zettabank
+networks:
+  zettabank:
+    driver: "bridge"

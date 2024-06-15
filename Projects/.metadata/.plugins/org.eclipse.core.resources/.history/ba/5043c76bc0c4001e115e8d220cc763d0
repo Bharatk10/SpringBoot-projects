@@ -1,0 +1,11 @@
+package com.zettamine.boot.service;
+
+import com.zettamine.boot.entity.InspectionLot;
+
+public interface IInsptLotService {
+	
+	InspectionLot saveInspLot(InspectionLot inspLot,String status);
+	
+	List<InspectionLot> getAllInspectionLots();
+
+}

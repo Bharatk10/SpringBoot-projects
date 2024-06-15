@@ -1,0 +1,22 @@
+package com.zettamine.boot.service;
+
+import java.util.Map;
+
+import com.zettamine.boot.dto.LoginDto;
+import com.zettamine.boot.dto.UserDto;
+import com.zettamine.boot.entity.User;
+
+public interface IUserService {
+
+	Boolean save(UserDto userDto);
+	
+	Boolean checkValidUser(String email);
+	
+	public Map<String, Object> checkValidPassword(LoginDto dto);
+	
+	Boolean updatePassword(LoginDto dto);
+
+	Boolean forgotPassword(String email);
+	
+	public List<UserRoleDto> getAllUsers();
+}

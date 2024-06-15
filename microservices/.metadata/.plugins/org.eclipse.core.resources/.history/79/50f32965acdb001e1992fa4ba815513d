@@ -1,0 +1,8 @@
+spring.sql.init.platform=postgreSql
+spring.sql.init.mode=always
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+spring.sql.init.continue-on-error=true
+
+# Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true

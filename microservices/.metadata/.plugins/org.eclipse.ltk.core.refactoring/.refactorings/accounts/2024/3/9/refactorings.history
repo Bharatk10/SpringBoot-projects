@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy package &apos;com.zettamine.accounts.audit&apos; to &apos;accounts-microservice/src/main/java/com.zettamine.accounts&apos;&#x0D;&#x0A;- Original project: &apos;accounts&apos;&#x0D;&#x0A;- Destination element: &apos;accounts-microservice/src/main/java/com.zettamine.accounts&apos;&#x0D;&#x0A;- Original element: &apos;accounts/src/main/java/com.zettamine.accounts.audit&apos;" description="Copy package" destination="=accounts-microservice/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.zettamine.accounts" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.zettamine.accounts.audit" flags="589830" fragments="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyPackages" stamp="1709291761439" version="1.0"/>
+</session>

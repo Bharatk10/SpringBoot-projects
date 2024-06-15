@@ -1,0 +1,15 @@
+package com.zettamine.boot.service;
+
+import java.util.TreeSet;
+
+import com.zettamine.boot.entity.User;
+
+public interface IUserService {
+	
+	Boolean validateUserCredintials(String userName,String password);
+	
+	User getUserDetailsByUserName(String userName);
+	
+	TreeSet<Integer> getAllVendorId();
+
+}

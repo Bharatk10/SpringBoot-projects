@@ -1,0 +1,73 @@
+package com.zettamine.mpa.mapper;
+
+import com.zettamine.mpa.escrow.dto.EscrowReqLoanProductDto;
+import com.zettamine.mpa.escrow.entity.EscrowReqLoanProduct;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2024-04-11T09:43:29+0530",
+    comments = "version: 1.6.0.Beta1, compiler: Eclipse JDT (IDE) 3.36.0.v20231114-0937, environment: Java 17.0.9 (Eclipse Adoptium)"
+)
+@Component
+public class EscrowReqLoanProductMapperImpl implements EscrowReqLoanProductMapper {
+
+    @Override
+    public EscrowReqLoanProduct toEntity(EscrowReqLoanProductDto escoReqLoanProdDto) {
+        if ( escoReqLoanProdDto == null ) {
+            return null;
+        }
+
+        EscrowReqLoanProduct escrowReqLoanProduct = new EscrowReqLoanProduct();
+
+        escrowReqLoanProduct.setProdId( escoReqLoanProdDto.getProdId() );
+        escrowReqLoanProduct.setReqId( escoReqLoanProdDto.getReqId() );
+
+        return escrowReqLoanProduct;
+    }
+
+    @Override
+    public EscrowReqLoanProductDto toDto(EscrowReqLoanProduct byId) {
+        if ( byId == null ) {
+            return null;
+        }
+
+        EscrowReqLoanProductDto escrowReqLoanProductDto = new EscrowReqLoanProductDto();
+
+        escrowReqLoanProductDto.setProdId( byId.getProdId() );
+        escrowReqLoanProductDto.setReqId( byId.getReqId() );
+
+        return escrowReqLoanProductDto;
+    }
+
+    @Override
+    public List<EscrowReqLoanProduct> toEntity(List<EscrowReqLoanProductDto> loanReqList) {
+        if ( loanReqList == null ) {
+            return null;
+        }
+
+        List<EscrowReqLoanProduct> list = new ArrayList<EscrowReqLoanProduct>( loanReqList.size() );
+        for ( EscrowReqLoanProductDto escrowReqLoanProductDto : loanReqList ) {
+            list.add( toEntity( escrowReqLoanProductDto ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<EscrowReqLoanProductDto> toDto(List<EscrowReqLoanProduct> reqLoan) {
+        if ( reqLoan == null ) {
+            return null;
+        }
+
+        List<EscrowReqLoanProductDto> list = new ArrayList<EscrowReqLoanProductDto>( reqLoan.size() );
+        for ( EscrowReqLoanProduct escrowReqLoanProduct : reqLoan ) {
+            list.add( toDto( escrowReqLoanProduct ) );
+        }
+
+        return list;
+    }
+}

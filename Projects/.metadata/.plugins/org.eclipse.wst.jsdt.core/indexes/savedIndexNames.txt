@@ -1,0 +1,6 @@
+INDEX VERSION 1.4+D:\Zettamine\Spring Boot\Projects\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+744015855.index
+3474652965.index
+967012467.index
+573812455.index
+761788377.index

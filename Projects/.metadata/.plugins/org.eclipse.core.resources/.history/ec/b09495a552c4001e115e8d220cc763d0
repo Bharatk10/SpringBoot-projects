@@ -1,0 +1,85 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.TreeSet;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.boot.entity.Plant;
+import com.zettamine.boot.repository.PlantRepository;
+
+@Service
+public class PlantServiceImpl implements IPlantService {
+
+	@Autowired
+	private PlantRepository plantRepo;
+
+	@Override
+	public Plant savePlant(Plant plant) {
+		
+		plant.setPlantId(plant.getPlantId().toUpperCase().trim());
+		plant.setPlantName(plant.getPlantName().toUpperCase().trim());
+	    plant.setLocation(plant.getLocation().toUpperCase().trim());
+	    
+	    Character ch = 'A';
+	    plant.setStatus(ch);
+
+		Plant PlantObj =plantRepo.save(plant);
+		
+		
+
+		return PlantObj;
+	}
+
+	@Override
+	public List<Plant> getAllPlants() {
+		
+		Character ch = 'A';
+
+		List<Plant> PlantList = plantRepo.findByStatus(ch);
+
+		return PlantList;
+	}
+
+	@Override
+	public Plant getPlantById(String id) {
+
+		Plant Plant = null;
+
+		Optional<Plant> PlantObj = plantRepo.findById(id);
+		if (PlantObj.isPresent()) {
+			Plant = PlantObj.get();
+		}
+
+		return Plant;
+	}
+
+	@Override
+	public Plant editPlantStatus(String id) {
+
+		Plant plant = null;
+
+		Optional<Plant> plantObj = plantRepo.findById(id);
+		
+		if(plantObj.isPresent()) {
+			
+			plant = plantObj.get();
+			plant.setStatus('I');
+			
+			plant = plantRepo.save(plant);
+		}
+
+		return plant;
+	}
+
+	@Override
+	public TreeSet<String> getAllPlantINames() {
+		
+		TreeSet<String> plantIds = plantRepo.getAllPlantName();
+		
+		return plantIds;
+	}
+
+}

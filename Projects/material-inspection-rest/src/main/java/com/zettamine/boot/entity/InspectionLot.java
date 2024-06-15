@@ -1,0 +1,74 @@
+package com.zettamine.boot.entity;
+
+import java.sql.Date;
+import java.util.ArrayList;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Entity
+@Table(name = "ISP_LOT")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class InspectionLot {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lotid_generator")
+	@SequenceGenerator(name = "lotid_generator", sequenceName = "lot_id_sequence", initialValue = 4001, allocationSize = 1)
+	private Integer lotId;
+
+	@OneToMany(mappedBy = "inspectionLot", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@ToString.Exclude
+	@JsonIgnore
+	private List<InspectionActuals> inspectionActuals = new ArrayList<>();
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "material_id", referencedColumnName = "materialId")
+	@ToString.Exclude
+	private Material material;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "vendor_id", referencedColumnName = "vendorId")
+	@ToString.Exclude
+	private Vendor vendor;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "plant_id", referencedColumnName = "plantId")
+	@ToString.Exclude
+	private Plant plant;
+
+	private Date createdOn;
+
+	private Date startDate;
+
+	private Date endDate;
+
+	private String result;
+
+	private String remarks;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "userId")
+	@ToString.Exclude
+	private User user;
+
+}

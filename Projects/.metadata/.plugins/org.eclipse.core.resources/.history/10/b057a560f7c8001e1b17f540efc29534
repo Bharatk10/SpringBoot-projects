@@ -1,0 +1,10 @@
+package com.zettamine.boot.utility;
+
+public class SessionUtils {
+	
+	 public static boolean isUserLoggedIn( HttpSession session) {
+	        HttpSession session = request.getSession(false);
+	        return session != null && session.getAttribute("user") != null;
+	    }
+
+}

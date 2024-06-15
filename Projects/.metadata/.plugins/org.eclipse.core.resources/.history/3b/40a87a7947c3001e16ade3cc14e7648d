@@ -1,0 +1,10 @@
+package com.zettamine.boot.service;
+
+import com.zettamine.boot.entity.Vendor;
+
+public interface IVendorService {
+	
+	Vendor saveVendor(Vendor vendor);
+	
+
+}

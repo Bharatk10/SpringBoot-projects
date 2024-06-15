@@ -1,0 +1,32 @@
+package com.zettamine.mpa.mapper;
+
+import com.zettamine.mpa.escrow.dto.EscrowServiceAreaDto;
+import com.zettamine.mpa.escrow.entity.EscrowServiceArea;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2024-04-11T09:43:28+0530",
+    comments = "version: 1.6.0.Beta1, compiler: Eclipse JDT (IDE) 3.36.0.v20231114-0937, environment: Java 17.0.9 (Eclipse Adoptium)"
+)
+@Component
+public class EscrowServiceAreaMapperImpl implements EscrowServiceAreaMapper {
+
+    @Override
+    public EscrowServiceArea toEntity(EscrowServiceAreaDto serviceAreaDto) {
+        if ( serviceAreaDto == null ) {
+            return null;
+        }
+
+        EscrowServiceArea escrowServiceArea = new EscrowServiceArea();
+
+        escrowServiceArea.setCity( serviceAreaDto.getCity() );
+        escrowServiceArea.setCounty( serviceAreaDto.getCounty() );
+        escrowServiceArea.setEscrow( serviceAreaDto.getEscrow() );
+        escrowServiceArea.setState( serviceAreaDto.getState() );
+        escrowServiceArea.setZipcode( serviceAreaDto.getZipcode() );
+
+        return escrowServiceArea;
+    }
+}

@@ -1,0 +1,20 @@
+package com.zettamine.boot.mapper;
+
+import com.zettamine.boot.dto.UserRoleDto;
+import com.zettamine.boot.entity.User;
+
+public class UserRoleMapper {
+
+	public static UserRoleDto userToUserRoleDto(User user, UserRoleDto dto) {
+		dto.setFirstName(user.getFirstName());
+		dto.setLastName(user.getLastName());
+		dto.setEmail(user.getEmail());
+		dto.setDesignation(user.getDesignation());
+		dto.setAccountLock(user.isAccountLock());
+		dto.setRoleName(user.getRole().getRoleName());
+		if(user.getImage()!=null) {
+			dto.setImage(user.getImage());
+		}
+		return dto;
+	}
+}

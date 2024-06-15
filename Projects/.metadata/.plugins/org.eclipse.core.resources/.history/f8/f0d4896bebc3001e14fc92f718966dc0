@@ -1,0 +1,101 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<title>Material Inspection</title>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<style>
+.content {
+	max-width: 800px;
+	margin: 20px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+}
+
+label {
+	font-weight: bold;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin: 5px 0;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+</style>
+</head>
+
+<body>
+
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+
+	<div class="content">
+		<h1>Add Material Characteristics</h1>
+
+		<form th:action="@{/zettaInsp/submitMatInsp}" th:object="${matInsp}" method="post">
+
+			<input type="hidden" id="channelId" th:field="*{channelId} " />
+			<input type="hidden" id="materialId" th:field="*{materialId}" th:value="${mId}" />
+			 <label for="channelDesc">Material Description:</label> 
+				<input type="text" id="materialDesc" th:field="*{channelDescription}" required> 
+				
+				<label for="utollerance">Upper Tollerance:</label>
+    <input type="text" id="utollerance" th:field="*{upperTollerance}" required>
+    	<label for="ltollerance">Lower Tollerance:</label>
+    <input type="text" id="ltollerance" th:field="*{lowerTollerance}" required>
+       <label for="ums">Unit of measurement:</label>
+    <input type="text" id="ums" th:field="*{ums}" required>
+        
+			 <div>
+        
+        <button type="submit">Submit</button>
+
+       
+        <button type="reset">Reset</button>
+
+       
+        <button type="button" onclick="history.back()">Back</button>
+
+       
+        <button type="button" ><a href="home">Home</a></button>
+    </div>
+
+
+			
+		</form>
+		
+	</div>
+	
+</body>
+</html>

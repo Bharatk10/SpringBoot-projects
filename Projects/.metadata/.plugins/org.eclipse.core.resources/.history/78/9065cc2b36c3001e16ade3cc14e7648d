@@ -1,0 +1,18 @@
+package com.zettamine.boot.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.zettamine.boot.entity.Vendor;
+import com.zettamine.boot.repository.VendorRepository;
+
+public class VendorServiceImp implements IVendorService {
+	
+	private VendorRepository vendorRepo;
+
+	@Override
+	public Vendor saveVendor(Vendor vendor) {
+		
+		return null;
+	}
+
+}

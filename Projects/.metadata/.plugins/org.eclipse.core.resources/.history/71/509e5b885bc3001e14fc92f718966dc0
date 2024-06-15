@@ -1,0 +1,18 @@
+package com.zettamine.boot.service;
+
+import java.util.List;
+
+import com.zettamine.boot.entity.Plant;
+
+
+public interface IPlantService {
+	
+	Plant savePlant(Plant plant);
+	
+	List<Plant> getAllPlants();
+	
+	Plant getPlantById(String id);
+	
+	Plant editPlantStatus(string id);
+	
+}

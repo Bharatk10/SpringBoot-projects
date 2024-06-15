@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;&apos; to &apos;com.zettamine.boot.models.ValidMaterialType.message()&apos;&#x0D;&#x0A;- Original project: &apos;material-inspection-rest&apos;&#x0D;&#x0A;- Destination element: &apos;com.zettamine.boot.models.ValidMaterialType.message()&apos;&#x0D;&#x0A;- Original element: &apos;com.zettamine.boot.models.ValidMaterialType.message()&apos;" description="Copy method" destination="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.zettamine.boot.models{ValidMaterialType.java[ValidMaterialType~message" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.zettamine.boot.models{ValidMaterialType.java[ValidMaterialType~message" flags="589830" id="org.eclipse.jdt.ui.copy" members="1" policy="org.eclipse.jdt.ui.copyMembers" stamp="1709552599541" version="1.0"/>
+</session>

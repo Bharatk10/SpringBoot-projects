@@ -1,0 +1,9 @@
+package com.zettamine.boot.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.zettamine.boot.entity.Vendor;
+
+public interface VendorRepository extends JpaRepository<Vendor, Integer> {
+
+}

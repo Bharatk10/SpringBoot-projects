@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;user-login-react-project&apos; to &apos;user-module-react&apos;" description="Rename resource &apos;user-login-react-project&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/user-login-react-project" name="user-module-react" stamp="1715255488791" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;user-module-react&apos; to &apos;user-login-react-project&apos;" description="Rename resource &apos;user-module-react&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/user-module-react" name="user-login-react-project" stamp="1715255604280" updateReferences="true"/>
+</session>

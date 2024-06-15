@@ -1,0 +1,18 @@
+package com.zettamine.accounts.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import lombok.Data;
+
+@Data
+public class CustomerDto {
+	  
+	private String name;
+	private String email;
+	private String mobileNumber;
+	
+	@JsonDeserialize
+	private AccountDto accountDto;
+
+}

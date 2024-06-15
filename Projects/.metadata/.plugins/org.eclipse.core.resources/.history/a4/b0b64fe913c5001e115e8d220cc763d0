@@ -1,0 +1,17 @@
+package com.zettamine.boot.repository;
+
+
+
+import java.util.TreeSet;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.zettamine.boot.entity.MaterialInspection;
+
+public interface MatInspRepository extends JpaRepository<MaterialInspection, Integer> {
+
+	
+	@Query("select m.channelId from MaterialInspection m where  m.materialId =:id")
+	TreeSet<Integer> findChannelIdsByMaterialId(String id);
+}

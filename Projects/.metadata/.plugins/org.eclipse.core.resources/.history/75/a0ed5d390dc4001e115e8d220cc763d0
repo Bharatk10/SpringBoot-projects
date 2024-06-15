@@ -1,0 +1,24 @@
+package com.zettamine.boot.constants;
+
+public class AppConstants {
+	
+ public static final String INDEX_VIEW = "index";
+ 
+ public static final String VENDOR_VIEW = "vendor";
+ 
+ public static final String PLANT_VIEW = "plant";
+ 
+ public static final String MATERIAL_VIEW = "material";
+ 
+ public static final String SAVE_SUCCESS = "saveSuccess";
+ 
+ public static final String UPDATE_SUCCESS = "updateSuccess";
+ 
+ public static final String SAVE_FAILED = "saveFail";
+ 
+ public static final String SUCCESS_MSG = "succMsg";
+ 
+ public static final String ERROR_MSG = "errMsg";
+ 
+ 
+}

@@ -1,0 +1,75 @@
+package com.zettamine.mpa.mapper;
+
+import com.zettamine.mpa.escrow.dto.EscrowReqDto;
+import com.zettamine.mpa.escrow.entity.EscrowReq;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2024-04-11T09:43:29+0530",
+    comments = "version: 1.6.0.Beta1, compiler: Eclipse JDT (IDE) 3.36.0.v20231114-0937, environment: Java 17.0.9 (Eclipse Adoptium)"
+)
+@Component
+public class EscrowReqMapperImpl implements EscrowReqMapper {
+
+    @Override
+    public EscrowReq toEntity(EscrowReqDto escrowReqDto) {
+        if ( escrowReqDto == null ) {
+            return null;
+        }
+
+        EscrowReq escrowReq = new EscrowReq();
+
+        escrowReq.setDescription( escrowReqDto.getDescription() );
+        escrowReq.setReqId( escrowReqDto.getReqId() );
+        escrowReq.setReqName( escrowReqDto.getReqName() );
+
+        return escrowReq;
+    }
+
+    @Override
+    public EscrowReqDto toDto(EscrowReq escoReq) {
+        if ( escoReq == null ) {
+            return null;
+        }
+
+        EscrowReqDto escrowReqDto = new EscrowReqDto();
+
+        escrowReqDto.setDescription( escoReq.getDescription() );
+        escrowReqDto.setReqId( escoReq.getReqId() );
+        escrowReqDto.setReqName( escoReq.getReqName() );
+
+        return escrowReqDto;
+    }
+
+    @Override
+    public List<EscrowReqDto> toDto(List<EscrowReq> escoReqList) {
+        if ( escoReqList == null ) {
+            return null;
+        }
+
+        List<EscrowReqDto> list = new ArrayList<EscrowReqDto>( escoReqList.size() );
+        for ( EscrowReq escrowReq : escoReqList ) {
+            list.add( toDto( escrowReq ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<EscrowReq> toEntity(List<EscrowReqDto> reqList) {
+        if ( reqList == null ) {
+            return null;
+        }
+
+        List<EscrowReq> list = new ArrayList<EscrowReq>( reqList.size() );
+        for ( EscrowReqDto escrowReqDto : reqList ) {
+            list.add( toEntity( escrowReqDto ) );
+        }
+
+        return list;
+    }
+}

@@ -1,0 +1,9 @@
+package com.zettamine.boot.controller;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+@RequestMapping("/zettaInsp")
+public class MaterialInspController {
+
+}

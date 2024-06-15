@@ -1,0 +1,12 @@
+package com.zettamine.boot.service;
+
+import com.zettamine.boot.entity.Material;
+
+public interface IMaterialService {
+	
+	Material saveMaterial(Material material,String id);
+	
+	String materialIdGenerator();
+	
+
+}

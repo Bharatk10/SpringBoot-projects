@@ -1,0 +1,54 @@
+server:
+  port: 9000
+spring:
+  profiles:
+    active: "qa"
+  application:
+    name: "cards"
+  datasource:
+    url: jdbc:h2:mem:cardsdb
+    driverClassName: org.h2.Driver
+    username: admin
+    password: 1234
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  config:
+    import:
+     "optional:configserver:http://localhost:7000/"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+   shutdown:
+     enabled: true
+eureka:
+ instance:
+  prefer-ip-address: true
+  appname: cards
+ client:
+   fetch-registry: true
+   registerWithEureka: true
+   serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    
+info:
+ app:
+  name: "loans"
+  description: "Zetta Application loans microservice"
+  version: "1.0.0"
+  

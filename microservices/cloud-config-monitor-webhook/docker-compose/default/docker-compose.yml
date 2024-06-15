@@ -1,0 +1,48 @@
+services:
+  configserver:
+  image: "bharatkumaradapa/configserver:v1"    
+  container_name: configserver-ms
+  ports: 
+   - "7000:7000"
+  deploy:
+   resources:
+    limits:
+     memory: 700m
+  networks:
+   - zettabank
+  accounts:
+    image: "bharatkumaradapa/accounts:v1"
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - zettabank
+  loans:
+    image: "bharatkumaradapa/loans:v1"
+    container_name: loans-ms
+    ports:
+      - "6000:6000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - zettabank
+  cards:
+    image: "bharatkumaradapa/cards:v1"
+    container_name: cards-ms
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - zettabank
+networks:
+  zettabank:
+    driver: "bridge"

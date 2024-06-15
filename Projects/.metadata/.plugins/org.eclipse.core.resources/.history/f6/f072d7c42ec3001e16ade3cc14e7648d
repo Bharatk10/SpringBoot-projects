@@ -1,0 +1,15 @@
+
+#Data base configuration
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://localhost:5432/db_material_inspection?currentSchema=mat_isp                 
+spring.datasource.username=postgres
+spring.datasource.password=Bharat@10
+
+#hibernate configuraion
+
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=create
+
+spring.thymeleaf.prefix=classpath:/templates/
+
+

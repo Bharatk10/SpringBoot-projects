@@ -1,0 +1,9 @@
+INDEX VERSION 1.134
+D:\Zettamine\Spring Boot\Spring mvc\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1157390234.index
+\03.sb-mvc-app\src\main\java
+D:\Zettamine\Spring Boot\Spring mvc\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1117848575.index
+\01.sb-mvc\src\main\java
+D:\Zettamine\Spring Boot\Spring mvc\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\782931174.index
+\02.sb-thymleaf-mvc\src\main\java
+D:\Zettamine\Spring Boot\Spring mvc\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\744901710.index
+\01.sb-mvc\src\main\java

@@ -1,0 +1,25 @@
+package com.zettamine.accounts.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.zettamine.accounts.dto.CustomerDetailsDto;
+import com.zettamine.accounts.service.client.CardsFeignClient;
+import com.zettamine.accounts.service.client.LoansFeignClient;
+
+@Service
+public class CustomerDetailsServiceImpl implements ICustomerDetailsService{
+	
+	@Autowired
+	private CardsFeignClient cardsClient;
+	
+	@Autowired
+	private LoansFeignClient loansClient;
+
+	@Override
+	public CustomerDetailsDto fetchCustomerDetails(String mobileNumber) {
+		
+		return null;
+	}
+
+}

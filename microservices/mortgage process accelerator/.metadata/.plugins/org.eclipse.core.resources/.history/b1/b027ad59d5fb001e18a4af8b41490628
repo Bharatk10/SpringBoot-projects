@@ -1,0 +1,28 @@
+package com.zettamine.mpa.escrow.repository;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.zettamine.mpa.escrow.dto.EscrowReqDto;
+import com.zettamine.mpa.escrow.entity.EscrowReqLoanProduct;
+
+public interface EscrowReqLoanProductRepository extends JpaRepository<EscrowReqLoanProduct, Serializable> {
+
+	public List<EscrowReqLoanProduct> findByProdId(Integer prodId);
+
+	public EscrowReqLoanProduct findByReqIdAndProdId(Integer reqId, Integer prodId);
+
+	public List<EscrowReqLoanProduct> findByReqId(Integer reqId);
+
+	@Query(value = "SELECT lr.prod_id " + "FROM escrow_req_loan_product lr " + "WHERE lr.req_id IN :reqIds "
+			+ "GROUP BY lr.prod_id " + "HAVING COUNT(DISTINCT lr.req_id) = :reqCount", nativeQuery = true)
+	List<Integer> searchByReq(@Param("reqIds") Set<Integer> reqIds, @Param("reqCount") int reqCount);
+	
+	public List<EscrowReqLoanProduct> findByProdIdAndActive(Integer prodId, String active);
+}

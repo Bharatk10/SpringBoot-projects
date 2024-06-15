@@ -1,0 +1,12 @@
+package com.zettamine.boot.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.zettamine.boot.entity.InspectionActuals;
+
+public interface InspectionActualsRepo extends JpaRepository<InspectionActuals, Integer> {
+	
+	@Query("select count(*) from InspectionActuals ia where ia.lotId = :lotId and " )
+	Integer getInspActualsByLotIdAndChannelId(Integer lotId,String mId);
+
+}

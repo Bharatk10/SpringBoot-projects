@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="lombok.NonNull"/>
+    <fullyQualifiedTypeName name="lombok.AllArgsConstructor"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.Table"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.GenerationType"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.Column"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.GeneratedValue"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.entity.MaterialInspection"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.CascadeType"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
+    <fullyQualifiedTypeName name="lombok.NoArgsConstructor"/>
+    <fullyQualifiedTypeName name="java.sql.Date"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.models.InspLotSearchCriteria"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.entity.InspectionLot"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.entity.Plant"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.constants.AppConstants"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.controller.MaterialInspController"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.controller.MaterialController"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.controller.VendorController"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.controller.PlantController"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.controller.InspectionLotController"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.Id"/>
+    <fullyQualifiedTypeName name="java.util.Set"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.entity.User"/>
+    <fullyQualifiedTypeName name="java.nio.file.Path"/>
+    <fullyQualifiedTypeName name="jakarta.mail.internet.MimeMessage"/>
+    <fullyQualifiedTypeName name="org.springframework.data.util.StreamUtils"/>
+    <fullyQualifiedTypeName name="org.springframework.util.StreamUtils"/>
+    <fullyQualifiedTypeName name="org.springframework.http.MediaType"/>
+    <fullyQualifiedTypeName name="org.springframework.web.multipart.MultipartFile"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.dto.CreateUserDto"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.mapper.UserMapper"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.dto.UserDto"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.mapper.UserRoleMapper"/>
+    <fullyQualifiedTypeName name="com.zettamine.boot.dto.UserRoleDto"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestPart"/>
+    <fullyQualifiedTypeName name="jakarta.transaction.Transactional"/>
+</qualifiedTypeNameHistroy>

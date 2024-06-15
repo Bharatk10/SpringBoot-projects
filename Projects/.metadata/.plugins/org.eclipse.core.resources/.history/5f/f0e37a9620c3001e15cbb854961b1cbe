@@ -1,0 +1,185 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+	margin: 0;
+	font-family: 'Arial', sans-serif;
+}
+
+nav {
+	background-color: #333;
+	color: white;
+	padding: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+nav .user-details i {
+	font-size: 30px;
+}
+
+nav .user-details {
+	display: flex;
+	align-items: center;
+	margin-right: 30px;
+}
+
+nav .user-details span {
+	font-size: 20px
+}
+
+nav .logout {
+	cursor: pointer;
+	color: white;
+	font-size: 30px;
+}
+
+.sidebar {
+	height: 100%;
+	width: 150px;
+	position: fixed;
+	background-color: #f1f1f1;
+	padding-top: 20px;
+}
+
+.sidebar a {
+	padding: 8px;
+	text-decoration: none;
+	font-size: 14px;
+	color: #000;
+	display: block;
+}
+
+.content {
+	margin-left: 200px;
+	padding: 8px;
+}
+
+.boxes-container {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 50px 10px;
+	flex-direction: row; /* Set direction to row */
+}
+
+.boxes-container>a {
+	text-decoration: none;
+	font-weight: 600;
+	font-size: 24px;
+	padding: 40px 70px;
+	background: linear-gradient(45deg, #b3cbda, #e1e4e7);
+	text-align: center;
+	border-radius: 10px;
+	color: black;
+	margin: 10px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+	transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.boxes-container>a:hover {
+	transform: scale(1.05);
+	background: linear-gradient(45deg, #77d1e1, #3c3c3d);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+	color: red;
+}
+
+
+
+       .dropdown {
+            display: inline-block;
+        }
+
+        .dropbtn {
+            padding: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            color: #000;
+            display: block;
+            background-color: #f1f1f1;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #ccc;
+        }
+</style>
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+</head>
+<body>
+
+	<nav>
+		<h1>
+			<img src="../../../images/logo.png" alt="User Avatar"> Zetta
+			Material Inspection
+		</h1>
+		<div class="user-details">
+			<i class="fa-regular fa-user"></i> <span th:text="${userName}">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="/zettaInsp/logout" class="logout"> <i
+				class="fa-solid fa-right-from-bracket"></i>
+			</a>
+		</div>
+	</nav>
+
+	<div class="sidebar">
+        <div class="dropdown">
+            <span class="dropbtn">Vendor</span>
+            <div class="dropdown-content">
+            	 <a href="/zettaInsp/Vendor">Vendor</a>
+                <a href="/zettaInsp/addVendor">Add Vendor</a>
+                <a href="/zettaInsp/searchVendor">Search Vendor</a>
+            </div>
+        </div>
+        <br>
+         <div class="dropdown">
+            <span class="dropbtn">Plant</span>
+            <div class="dropdown-content">
+            	 <a href="/zettaInsp/Plant">Plant</a>
+                <a href="/zettaInsp/addVendor">Add Plant</a>
+                <a href="/zettaInsp/searchVendor">Search Plant</a>
+            </div>
+        </div>
+        <a href="#section3">Material</a>
+        <a href="#section6">Inspection Lot</a>
+    </div>
+	
+
+	<div class="content">
+		<div class="boxes-container">
+			<a href="/zettaInsp/vendor">Vendor</a> <a href="#">Plant</a> <a
+				href="#">Material</a> <a href="#">Inspection Lot</a>
+		</div>
+	</div>
+
+</body>
+</html>

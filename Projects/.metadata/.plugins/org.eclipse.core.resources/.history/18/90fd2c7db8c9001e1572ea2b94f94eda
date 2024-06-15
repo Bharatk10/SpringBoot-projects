@@ -1,0 +1,97 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<title>Material Inspection</title>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<style>
+nav{
+position:sticky;
+	top:0;}
+.content {
+	max-width: 800px;
+	margin: 20px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+}
+
+label {
+	font-weight: bold;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin: 5px 0;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+</style>
+</head>
+
+<body>
+
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+
+	<div class="content">
+		<h1>Material Search view</h1>
+			
+			<form th:action="@{/zettaInsp/getmatdetails}" th:object="${criteria}" method="post">
+			
+			<label for="id">Material Id</label>
+			 <input type="text" name="id" th:field="*{materialId}" >
+
+			<label for="desc">Material Desc</label>
+			 <input type="text" name="desc" th:field="*{desc}" >
+			 
+
+			     <label for="status">Material Type</label>
+    <select th:field="*{materialType}">
+        <option value="">Select Material Type</option>
+        <option value="RAW MATERIAL">"RAW MATERIAL"</option>
+        <option value="SEMI-FINISHED GOODS">SEMI-FINISHED GOODS</option>
+        <option value="CONSUMABLE">CONSUMABLE</option>
+     
+    </select>
+			<button type="submit">Submit</button>
+			<button type="reset">Reset</button>
+			<button type="button" onclick="history.back()">Back</button>
+			
+			</form>
+			
+	</div>
+	
+	
+	
+</body>
+</html>

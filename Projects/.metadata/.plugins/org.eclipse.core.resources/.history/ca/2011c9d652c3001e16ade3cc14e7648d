@@ -1,0 +1,119 @@
+package com.zettamine.boot.controller;
+
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.zettamine.boot.entity.User;
+import com.zettamine.boot.entity.Vendor;
+import com.zettamine.boot.service.IVendorService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
+@Controller
+@RequestMapping("/zettaInsp")
+public class VendorController {
+
+	private IVendorService vendorService;
+
+	public VendorController(IVendorService vendorService) {
+		super();
+		this.vendorService = vendorService;
+	}
+
+	@GetMapping("/vendor")
+	public String getVendorPage(HttpServletRequest request, Model model) {
+
+		HttpSession session = request.getSession(false);
+
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+
+		return "vendor";
+	}
+
+	@GetMapping("/addVendor")
+	public String getAddVendorPage(HttpServletRequest request, Model model) {
+
+		HttpSession session = request.getSession(false);
+
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		model.addAttribute("vendor", new Vendor());
+
+		return "addVendor";
+	}
+
+	@PostMapping("/submitVendor")
+	public String addVendorDetails(HttpServletRequest request, Vendor vendor, Model model) {
+
+		Vendor vendorObj = vendorService.saveVendor(vendor);
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		if (vendorObj.getVendorId() != null) {
+			model.addAttribute("message", "Vendor Added succesfully");
+			return "vendor";
+		} else {
+			model.addAttribute("message", "Vendor Added Failed");
+			return "vendor";
+		}
+
+	}
+
+	@GetMapping("/vendors")
+	public String getallVendors(Model model, HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		List<Vendor> vendorList = vendorService.getAllVendors();
+		model.addAttribute("vendorList", vendorList);
+		model.addAttribute("userName", user.getUserName());
+		return "vendor";
+	}
+
+	@GetMapping("/update/{id}")
+	public String getUpdateVendorPage(@PathVariable("id") Integer id, Model model, HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		Vendor vendor = vendorService.getVendorById(id);
+
+		model.addAttribute("vendor", vendor);
+
+		model.addAttribute("userName", user.getUserName());
+		
+		return "updateVendorForm";
+
+	}
+	@PostMapping("/updateVendor")
+	public String upadteVendorDetails(HttpServletRequest request, Vendor vendor, Model model) {
+
+		Vendor vendorObj = vendorService.saveVendor(vendor);
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("user");
+
+		model.addAttribute("userName", user.getUserName());
+		if (vendorObj.getVendorId() != null) {
+			model.addAttribute("message", "Vendor Update succesfully");
+			return "vendor";
+		} else {
+			model.addAttribute("message", "Vendor Update Failed");
+			return "vendor";
+		}
+
+	}
+	
+
+}

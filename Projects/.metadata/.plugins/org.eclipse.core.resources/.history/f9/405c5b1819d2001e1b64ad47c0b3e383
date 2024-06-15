@@ -1,0 +1,5 @@
+package com.zettamine.boot.constants;
+
+public class ValidationContsants {
+
+}

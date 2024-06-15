@@ -1,0 +1,29 @@
+package com.zettamine.boot.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Plant {
+
+	@Id
+	private String plantId;
+	@Column(nullable = false)
+	private String plantName;
+	@Column(nullable = false)
+	private String location;
+	@Column(nullable = false)
+	private String city;
+	
+	private States states;
+	private Character status;
+	
+
+}

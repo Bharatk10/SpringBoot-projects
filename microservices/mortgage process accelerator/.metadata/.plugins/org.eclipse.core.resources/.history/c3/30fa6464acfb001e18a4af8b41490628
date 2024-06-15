@@ -1,0 +1,18 @@
+package com.zettamine.mpa.escrow.dto;
+
+import com.zettamine.mpa.escrow.constants.EscrowConstants;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+
+@Data
+public class EscrowReqDto {
+	
+	
+	@NotBlank(message = "*Required")
+	@Pattern(regexp = EscrowConstants.NAMES_REGEX,message = EscrowConstants.INVALID_NAME)
+	private String reqName;
+	
+	private String description;
+}

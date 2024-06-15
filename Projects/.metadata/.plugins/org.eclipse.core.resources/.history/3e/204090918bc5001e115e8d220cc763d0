@@ -1,0 +1,13 @@
+package com.zettamine.boot.service;
+
+import com.zettamine.boot.entity.InspectionActuals;
+
+public interface IInspActualService {
+	
+	InspectionActuals saveInspectionActuals(InspectionActuals inspAct);
+
+	void saveInspActBasedonLotId(Integer lotId);
+	
+	void  InspActBasedonLotIdandChannelId(Integer lotId,Integer channelId);
+
+}

@@ -1,0 +1,103 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<title>Material Inspection</title>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<style>
+nav{
+position:sticky;
+	top:0;}
+.content {
+	max-width: 800px;
+	margin: 20px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+}
+
+label {
+	font-weight: bold;
+}
+
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin: 5px 0;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+</style>
+</head>
+
+<body>
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+
+	<div class="content">
+		<h1 th:text="${message}"></h1>
+
+
+		<form th:action="@{/zettaInsp/updatePlant}" th:object="${plant}" method="post">
+
+			<input type="hidden" id="plantId" th:field="*{plantId}" /> <label
+				for="plantName">plant Name:</label> <input type="text"
+				id="plantName" th:field="*{plantName}" required><label
+				for="plantLocation">plant Location</label> <input type="text"
+				id="plantlocation" th:field="*{location}" required> 
+				<label for="state">State:</label>
+<select id="stateDropdown" name="stateDropdown" required th:field="*{state}">
+    <option th:each="stateOption : ${T(com.zettamine.boot.entity.State).getAllStates()}"
+            th:value="${stateOption}"
+            th:text="${stateOption.getStateName()}"></option>
+</select>
+				
+			 <input type="hidden" id="status" th:field="*{status}" />
+			
+			 <div>
+        
+        <button type="submit">Update</button>
+
+       
+        <button type="reset">Reset</button>
+
+       
+        <button type="button" onclick="history.back()">Back</button>
+
+       
+        <button type="button" ><a style="text-decoration: none; color:white"  href="/zettaInsp/home">Home</a></button>
+    </div>
+
+			
+		</form>
+	</div>
+</body>
+</html>

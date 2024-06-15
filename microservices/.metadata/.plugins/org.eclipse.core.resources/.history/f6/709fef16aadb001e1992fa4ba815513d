@@ -1,0 +1,5 @@
+package com.zettamine.docker.compose.entity;
+
+public class User {
+
+}

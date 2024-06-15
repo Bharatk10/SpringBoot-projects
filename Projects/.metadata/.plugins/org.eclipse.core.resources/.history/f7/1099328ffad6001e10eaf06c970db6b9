@@ -1,0 +1,343 @@
+package com.zettamine.boot.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.zettamine.boot.constants.AppConstants;
+import com.zettamine.boot.constants.ValidationConstants;
+import com.zettamine.boot.entity.InspectionActuals;
+import com.zettamine.boot.entity.InspectionLot;
+import com.zettamine.boot.entity.MaterialInspection;
+import com.zettamine.boot.models.InspActualModel;
+import com.zettamine.boot.models.InspLotDisplay;
+import com.zettamine.boot.models.InspLotModel;
+import com.zettamine.boot.service.IInspActualService;
+import com.zettamine.boot.service.IInsptLotService;
+import com.zettamine.boot.service.IMaterialInspService;
+import com.zettamine.boot.service.IMaterialService;
+import com.zettamine.boot.service.IPlantService;
+import com.zettamine.boot.service.IVendorService;
+import com.zettamine.boot.utility.StringUtilis;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/zettaInsp")
+public class InspectionLotController {
+
+	private IInsptLotService insplotService;
+	private IMaterialService materialService;
+	private IVendorService vendorService;
+	private IPlantService plantService;
+	private IInspActualService inspActService;
+	private IMaterialInspService matInspService;
+	
+	@Autowired
+	private EntityManager entityManager;
+	
+	public InspectionLotController(IInsptLotService insplotService, IMaterialService materialService,
+			IVendorService vendorService, IPlantService plantService, IInspActualService inspActService,
+			IMaterialInspService matInspService) {
+		super();
+		this.insplotService = insplotService;
+		this.materialService = materialService;
+		this.vendorService = vendorService;
+		this.plantService = plantService;
+		this.inspActService = inspActService;
+		this.matInspService = matInspService;
+	}
+
+	private static final Logger logger = LoggerFactory.getLogger(InspectionLotController.class);
+
+	@PostMapping("/insplot")
+	public ResponseEntity<?> addInspLot(@Valid @RequestBody InspLotModel InspLot) {
+
+		logger.debug("*** addInspLot() method execution started ***");
+
+		InspectionLot inspLotObj = insplotService.saveInspectionLotByLotModel(InspLot);
+
+		if (inspLotObj.getLotId() == null) {
+
+			logger.debug("*** addInspLot() method execution completed ***");
+			return ResponseEntity.badRequest().body(AppConstants.INSP_LOT_CREATE_ERROR);
+		}
+		logger.debug("*** addInspLot() method execution completed ***");
+		return ResponseEntity.status(HttpStatus.CREATED).body(inspLotObj);
+	}
+
+	@GetMapping("/lots/not-started")
+	public ResponseEntity<?> getAllLotsNotStarted() {
+		logger.debug("*** getAllLotsNotStarted() method execution started ***");
+
+		List<InspectionLot> inspLots = insplotService.getInspectionLotsWithStartDateNull();
+
+		if (inspLots.size() == 0) {
+
+			logger.debug("*** getAllLotsNotStarted() method execution completed ***");
+			return ResponseEntity.ok(ValidationConstants.INSP_LOT_LIST_START_DATE_MESSAGE);
+		}
+
+		logger.debug("*** getAllLotsNotStarted() method execution completed ***");
+		List<InspLotDisplay> inspLotDisplays = insplotService.getInspLotDisplays(inspLots);
+		return ResponseEntity.ok(inspLotDisplays);
+	}
+
+	@GetMapping("lots/inspection-progress")
+	public ResponseEntity<?> getAllInspectLotsUnderProgrss() {
+		logger.debug("*** getAllInspectLotsUnderProgrss() method execution started ***");
+
+		List<InspectionLot> inspLots = insplotService.getInspectionLotsWithStartDateNotNull();
+		if (inspLots.size() == 0) {
+			logger.debug("*** getAllLotsNotStartedUnderProgrss() method execution completed ***");
+			return ResponseEntity.ok(ValidationConstants.INSP_LOTS_LIST_MESSAGE);
+		}
+
+		logger.debug("*** getAllInspectLotsUnderProgrss() method execution completed ***");
+		List<InspLotDisplay> inspLotDisplays = insplotService.getInspLotDisplays(inspLots);
+		return ResponseEntity.ok(inspLotDisplays);
+	}
+
+	@GetMapping("lots/inspection-completed")
+	public ResponseEntity<?> getAllInspectLotsCompleted() {
+		logger.debug("*** getAllInspectLotsCompleted() method execution started ***");
+
+		List<InspectionLot> inspLots = insplotService.getInspectionLotsWithRemarksNotNull();
+		if (inspLots.size() == 0) {
+			logger.debug("*** getAllInspectLotsCompleted() method execution completed ***");
+			return ResponseEntity.ok(ValidationConstants.INSP_LOTS_LIST_MESSAGE);
+		}
+
+		logger.debug("*** getAllInspectLotsCompleted() method execution completed ***");
+		List<InspLotDisplay> inspLotDisplays = insplotService.getInspLotDisplays(inspLots);
+		return ResponseEntity.ok(inspLotDisplays);
+	}
+
+	@GetMapping("lots/result-pending")
+	public ResponseEntity<?> getAllInspectLotsMarkForApproval() {
+		logger.debug("*** getAllInspectLotsMarkForApproval() method execution started ***");
+
+		List<InspectionLot> inspLots = insplotService.getAllInspectionLotsMarkForApproval();
+		if (inspLots.size() == 0) {
+			logger.debug("*** getAllLotsMarkForApproval() method execution completed ***");
+			return ResponseEntity.ok(ValidationConstants.INSP_LOTS_LIST_MESSAGE);
+		}
+
+		logger.debug("*** getAllInspectLotsMarkForApproval() method execution completed ***");
+		List<InspLotDisplay> inspLotDisplays = insplotService.getInspLotDisplays(inspLots);
+		return ResponseEntity.ok(inspLotDisplays);
+	}
+
+	@GetMapping("lots/insplots")
+	public ResponseEntity<?> getAllInspectLots() {
+		logger.debug("*** getAllInspectLots() method execution started ***");
+
+		List<InspectionLot> inspLots = insplotService.getAllInspectionLots();
+		if (inspLots.size() == 0) {
+			logger.debug("*** getAllLotsNotStarted() method execution completed ***");
+			return ResponseEntity.ok(ValidationConstants.INSP_LOTS_LIST_MESSAGE);
+		}
+
+		logger.debug("*** getAllInspectLots() method execution completed ***");
+		List<InspLotDisplay> inspLotDisplays = insplotService.getInspLotDisplays(inspLots);
+		return ResponseEntity.ok(inspLotDisplays);
+	}
+
+	@PutMapping("lots/start-inspection/{lotId}")
+	public ResponseEntity<?> startInspectionLot(@PathVariable String lotId,
+			@RequestParam("startDate") String startDate) {
+		logger.debug("*** startInspectionLot() method execution started ***");
+
+		if (!lotId.matches(ValidationConstants.LOT_ID_PATTERN)) {
+			logger.info("Invalid vendorId format");
+			logger.debug("*** startInspectionLot() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationConstants.LOT_ID_ERROR);
+		}
+		InspectionLot inspLot = insplotService.getInspectionLotById(Integer.parseInt(lotId));
+		if (inspLot == null) {
+			logger.debug("*** startInspectionLot() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(ValidationConstants.LOT_NOT_PRESENT_ID_ERROR + lotId);
+		}
+		if (inspLot.getStartDate() != null) {
+			logger.debug("*** startInspectionLot() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(ValidationConstants.LOT_INSP_STARTED + lotId);
+		}
+		if (!startDate.matches(ValidationConstants.DATE_PATTERN)) {
+			logger.info("Invalid date format");
+			logger.debug("*** startInspectionLot() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationConstants.DATE_ERROR);
+		}
+		if (inspLot.getMaterial().getMatInsp() == null) {
+			logger.debug("*** startInspectionLot() method execution completed ***");
+
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(ValidationConstants.INSP_LOT_MATR_CHART_ERROR + " "
+					+ inspLot.getMaterial().getDesc() + " --- " + inspLot.getMaterial().getMaterialId());
+		}
+
+		InspectionLot inspLotObj = insplotService.saveInspLotWithStartDate(inspLot, startDate);
+
+		if (inspLotObj == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(AppConstants.INSPECTION_START_FAIL_MESSAGE);
+		}
+		return ResponseEntity.ok(AppConstants.INSPECTION_START_SUCCESS_MESSAGE + lotId);
+
+	}
+
+	@PostMapping("/actuals/{lotId}")
+	public ResponseEntity<?> addActuals(@PathVariable String lotId, @Valid @RequestBody InspActualModel inspActmodel) {
+		logger.debug("*** addActuals() method execution started ***");
+		if (!lotId.matches(ValidationConstants.LOT_ID_PATTERN)) {
+			logger.info("Invalid vendorId format");
+			logger.debug("*** addActuals() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationConstants.LOT_ID_ERROR);
+		}
+		InspectionLot inspLot = insplotService.getInspectionLotById(Integer.parseInt(lotId));
+		if (inspLot == null) {
+			logger.debug("*** addActuals() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(ValidationConstants.LOT_NOT_PRESENT_ID_ERROR + lotId);
+		}
+		if (inspLot.getStartDate() == null) {
+			logger.debug("*** addActuals() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(ValidationConstants.LOT_INSP_NOT_STARTED + lotId);
+		}
+		long matInspCount = inspLot.getMaterial().getMatInsp().size();
+		long inspActualCount = inspLot.getInspectionActuals().size();
+		if (matInspCount - inspActualCount == 0) {
+			logger.debug("*** addActuals() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(ValidationConstants.ACTUALS_ERROR + lotId);
+		}
+		String matDesc = StringUtilis.processSentance(inspActmodel.getChannelDesc());
+
+		Optional<MaterialInspection> optMatInsp = inspLot.getMaterial().getMatInsp().stream()
+				.filter(matInsp -> matInsp.getChannelDescription().equals(matDesc)).findFirst();
+
+		if (optMatInsp.isEmpty()) {
+			logger.debug("*** addActuals() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body(ValidationConstants.CHANNEL_NAME_NOT_ERROR + inspLot.getMaterial().getDesc());
+		}
+		List<MaterialInspection> matInsList = insplotService
+				.getMaterialInspectionList(inspLot.getMaterial().getMatInsp(), inspLot.getInspectionActuals());
+
+		Boolean statusOfChannelDesc = insplotService.getStatusOfChannelDesc(matDesc, matInsList);
+
+		if (statusOfChannelDesc) {
+
+			InspectionActuals inspActual = new InspectionActuals();
+			inspActual.setInspectionLot(inspLot);
+			inspActual.setMatInsp(optMatInsp.get());
+			inspActual.setMaxMesurment(inspActmodel.getMaxMeasurement());
+			inspActual.setMinMesurment(inspActmodel.getMinMeasurement());
+
+			InspectionActuals inspActualObj = inspActService.saveInspectionActuals(inspActual);
+
+			if (inspActualObj != null) {
+				
+				entityManager.clear();
+				
+				inspLot = insplotService.getInspectionLotById(Integer.parseInt(lotId));
+				int actCount = inspLot.getInspectionActuals().size();
+		  int charCount = inspLot.getMaterial().getMatInsp().size();
+				if (actCount == charCount) {
+					logger.debug("*** checking if all the actuals are inpected ***");
+					Boolean result = insplotService.generateInspLotResult(inspLot);
+			
+					logger.debug("*** saving the inspection lot based on the result ***");
+					insplotService.saveInspLot(inspLot, result, null);
+
+				}
+
+				InspActualModel inspActModelObj = inspActService.getInspActualModelFromInspActual(inspActualObj);
+				return ResponseEntity.status(HttpStatus.CREATED).body(inspActModelObj);
+			} else {
+
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationConstants.ACTUALS_SAVE_ERROR + lotId
+						+ " of Material Description: " + inspActual.getMatInsp().getChannelDescription());
+			}
+		}
+
+		return ResponseEntity.status(HttpStatus.CONFLICT)
+				.body("For " + inspActmodel.getChannelDesc() + ValidationConstants.ACTUALS_ALREADY_ERROR + lotId);
+
+	}
+	@GetMapping("/lots/view-actual/{lotId}")
+	public ResponseEntity<?> getInspectionActuals(@PathVariable String lotId) {
+
+		if (!lotId.matches(ValidationConstants.LOT_ID_PATTERN)) {
+			logger.info("Invalid vendorId format");
+			logger.debug("*** addActuals() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationConstants.LOT_ID_ERROR);
+		}
+		InspectionLot inspLot = insplotService.getInspectionLotById(Integer.parseInt(lotId));
+		if (inspLot == null) {
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(ValidationConstants.LOT_NOT_PRESENT_ID_ERROR + lotId);
+		}
+		if (inspLot.getStartDate() == null) {
+
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(ValidationConstants.LOT_INSP_NOT_STARTED + lotId);
+		}
+		if(inspLot.getInspectionActuals().size()==0) {
+			
+			String errorMessgae = String.format(ValidationConstants.VIEW_ACTUALS_ERROR, lotId);
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessgae);
+		}
+		
+		List<InspectionActuals> inspActuals = inspLot.getInspectionActuals();
+		
+		List<InspActualModel> inspActModels = inspActService.getInspActualsModelFromInspActuals(inspActuals);
+
+		return ResponseEntity.ok(inspActModels);
+	}
+	
+	@PutMapping("/lots/edit-actual/{lotId}")
+	public ResponseEntity<?> updateInspectionActual(@PathVariable String lotId,@RequestBody InspActualModel inspModel) {
+
+		if (!lotId.matches(ValidationConstants.LOT_ID_PATTERN)) {
+			logger.info("Invalid vendorId format");
+			logger.debug("*** addActuals() method execution completed ***");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ValidationConstants.LOT_ID_ERROR);
+		}
+		InspectionLot inspLot = insplotService.getInspectionLotById(Integer.parseInt(lotId));
+		if (inspLot == null) {
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(ValidationConstants.LOT_NOT_PRESENT_ID_ERROR + lotId);
+		}
+		if (inspLot.getStartDate() == null) {
+
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(ValidationConstants.LOT_INSP_NOT_STARTED + lotId);
+		}
+		if(inspLot.getInspectionActuals().size()==0) {
+			
+			String errorMessgae = String.format(ValidationConstants.VIEW_ACTUALS_ERROR, lotId);
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessgae);
+		}
+		
+		List<InspectionActuals> inspActuals = inspLot.getInspectionActuals();
+		
+		List<InspActualModel> inspActModels = inspActService.getInspActualsModelFromInspActuals(inspActuals);
+
+		return ResponseEntity.ok(inspActModels);
+	}
+
+}

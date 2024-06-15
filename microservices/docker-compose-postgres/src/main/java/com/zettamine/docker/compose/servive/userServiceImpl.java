@@ -1,0 +1,42 @@
+package com.zettamine.docker.compose.servive;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.zettamine.docker.compose.entity.User;
+import com.zettamine.docker.compose.repository.UserRepository;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public class userServiceImpl implements IUserService {
+	
+	private UserRepository userRepo;
+
+	@Override
+	public List<User> getAllUsers() {
+	
+		return userRepo.findAll();
+	}
+
+	@Override
+	public User saveUser(User user) {
+		
+		return userRepo.save(user);
+	}
+
+	@Override
+	public User getUserById(Integer id) {
+		
+		User user = null;
+		
+		Optional<User> optUser = userRepo.findById(id);
+		
+		if(optUser.isPresent()) {
+			
+			user = optUser.get();
+		}
+		return user;
+	}
+
+}

@@ -1,0 +1,156 @@
+package com.zettamine.mpa.escrow.serviceImpl;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.zettamine.mpa.escrow.constants.EscrowReqLoanProdConstants;
+import com.zettamine.mpa.escrow.dto.LoanReqDto;
+import com.zettamine.mpa.escrow.dto.EscrowReqDto;
+import com.zettamine.mpa.escrow.dto.EscrowReqLoanProductDto;
+import com.zettamine.mpa.escrow.entity.EscrowReq;
+import com.zettamine.mpa.escrow.entity.EscrowReqLoanProduct;
+import com.zettamine.mpa.escrow.repository.EscrowReqLoanProductRepository;
+import com.zettamine.mpa.escrow.repository.EscrowRequirmentRepository;
+import com.zettamine.mpa.escrow.service.EscrowReqLoanProductService;
+import com.zettamine.mpa.escrow.service.EscrowReqService;
+import com.zettamine.mpa.escrow.utils.StringUtil;
+import com.zettamine.mpa.exception.DuplicateLoanProdRequirment;
+import com.zettamine.mpa.exception.RequirmentNotPresentException;
+import com.zettamine.mpa.exception.ResourceNotFoundException;
+import com.zettamine.mpa.mapper.EscrowReqLoanProductMapper;
+
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class EscrowReqLoanProductServiceImpl implements EscrowReqLoanProductService {
+
+	private EscrowReqLoanProductRepository escoReqLoanRepo;
+	private EscrowReqLoanProductMapper escoReqLoanMapper;
+	private EscrowRequirmentRepository escoReqrepo;
+	private EscrowReqService escoReqSer;
+
+	@Override
+	public List<EscrowReqLoanProductDto> getAll() {
+		List<EscrowReqLoanProduct> all = escoReqLoanRepo.findAll();
+		List<EscrowReqLoanProductDto> dtoList = escoReqLoanMapper.toDto(all);
+		return dtoList;
+	}
+
+	@Override
+	public List<String> findByProdId(Integer ProdId) {
+
+		List<String> reNames = new ArrayList<>();
+		List<EscrowReqLoanProduct> byProdId = escoReqLoanRepo.findByProdIdAndActive(ProdId,
+				EscrowReqLoanProdConstants.ACTIVE);
+		if (byProdId.size() == 0) {
+			throw new ResourceNotFoundException(
+					String.format("%s %s", EscrowReqLoanProdConstants.LOAN_ID_NOT_FOUND, ProdId.toString()));
+		}
+		for (EscrowReqLoanProduct reqId : byProdId) {
+			EscrowReqDto byReqId = escoReqSer.findByReqId(reqId.getReqId());
+			reNames.add(byReqId.getReqName());
+		}
+		return reNames;
+	}
+
+	@Override
+	public void save(EscrowReqLoanProductDto escoReqLoanDto) {
+
+		EscrowReqLoanProduct escoReqLoan = escoReqLoanMapper.toEntity(escoReqLoanDto);
+		escoReqLoanRepo.save(escoReqLoan);
+	}
+
+	@Override
+	public void save(LoanReqDto addReqLoanDto) {
+		Integer loanId = addReqLoanDto.getProdId();
+		for (String reqName : addReqLoanDto.getRequirments()) {
+			String norReqName = StringUtil.normalizeString(reqName);
+			Optional<EscrowReq> byReqNameOpt = escoReqrepo.findByReqName(norReqName);
+			if (byReqNameOpt.isEmpty()) {
+				throw new RequirmentNotPresentException(String.format("%s %s", norReqName, EscrowReqLoanProdConstants.ENTITY_NOT_FOUND));
+			}
+			EscrowReq escrowReq = byReqNameOpt.get();
+			EscrowReqLoanProduct byReqIdAndProdId = escoReqLoanRepo.findByReqIdAndProdId(escrowReq.getReqId(),loanId);
+			if (byReqIdAndProdId != null) {
+				throw new DuplicateLoanProdRequirment(String.format("%s %s",norReqName, EscrowReqLoanProdConstants.SAVE_CONFLICT));
+			}
+			EscrowReqLoanProductDto loanReqDto = new EscrowReqLoanProductDto();
+			loanReqDto.setProdId(loanId);
+			loanReqDto.setReqId(escrowReq.getReqId());
+			escoReqLoanRepo.save(escoReqLoanMapper.toEntity(loanReqDto));
+		}
+	}
+
+	@Override
+	public void save(List<EscrowReqLoanProductDto> loanReqList) {
+		List<EscrowReqLoanProduct> loanReq = escoReqLoanMapper.toEntity(loanReqList);
+		escoReqLoanRepo.saveAll(loanReq);
+	}
+
+	@Override
+	public EscrowReqLoanProductDto findByReqIdAndProdId(Integer reqId, Integer prodId) {
+
+		EscrowReqLoanProduct byReqIdAndProdId = escoReqLoanRepo.findByReqIdAndProdId(reqId, prodId);
+		return escoReqLoanMapper.toDto(byReqIdAndProdId);
+	}
+
+
+	@Override
+	public List<EscrowReqLoanProductDto> findByReqName(List<String> reqName) {
+		List<List<EscrowReqLoanProductDto>> byReqName = new ArrayList<>();
+		List<EscrowReq> reqByName = escoReqrepo.findByReqName(reqName);
+		for (EscrowReq req : reqByName) {
+			List<EscrowReqLoanProduct> byReqId = escoReqLoanRepo.findByReqId(req.getReqId());
+			byReqName.add(escoReqLoanMapper.toDto(byReqId));
+		}
+		return byReqName.stream().flatMap(m -> m.stream()).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Integer> searchByReq(List<String> reqNameList) {
+
+		List<EscrowReq> byReqName = escoReqrepo.findByReqName(reqNameList);
+		Set<Integer> reqIds = new HashSet<>();
+		for (EscrowReq req : byReqName) {
+			reqIds.add(req.getReqId());
+		}
+		List<Integer> searchByReq = escoReqLoanRepo.searchByReq(reqIds, reqIds.size());
+		return searchByReq;
+	}
+
+	@Override
+	public List<EscrowReqLoanProductDto> findByReqId(Integer reqId) {
+		return escoReqLoanMapper.toDto(escoReqLoanRepo.findByReqId(reqId));
+	}
+	@Override
+	public void delete(@Valid LoanReqDto loanReqDto) {
+		Integer prodId = loanReqDto.getProdId();
+		List<String> reqNotAviForLoan = new ArrayList<>();
+		List<String> loanReqs = StringUtil.formatEscrowReq(loanReqDto.getRequirments());
+		List<Integer> reqIdByName = getReqIdByName(loanReqs);
+		for (int reqId : reqIdByName) {
+			EscrowReqLoanProduct loanReq = escoReqLoanRepo.findByReqIdAndProdIdAndActive(reqId, prodId,
+					EscrowReqLoanProdConstants.ACTIVE);
+			if (loanReq == null) {
+				EscrowReqDto byReqId = escoReqSer.findByReqId(reqId);
+				reqNotAviForLoan.add(byReqId.getReqName());
+			}
+		}
+		if (reqNotAviForLoan.size() > 0) {
+			throw new RequirmentNotPresentException(String.format("%s %s for loan product with ID: %s ",
+					reqNotAviForLoan, EscrowReqLoanProdConstants.ENTITY_NOT_FOUND, prodId.toString()));
+		}
+		escoReqLoanRepo.updateActiveByReqIdInAndProdId(reqIdByName, prodId, EscrowReqLoanProdConstants.INACTIVE);
+	}
+
+}

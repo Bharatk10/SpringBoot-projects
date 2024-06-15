@@ -1,0 +1,14 @@
+package com.zettamine.rest.controller;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class WelcomeRestControllerTest {
+
+	@Test
+	void test() {
+		fail("Not yet implemented");
+	}
+
+}

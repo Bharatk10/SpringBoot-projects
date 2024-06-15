@@ -1,0 +1,22 @@
+logging:
+  file:
+    name: logs/escrow.log
+  level:
+    root: INFO
+  logback:
+    rollingpolicy:
+      max-file-size: 2Mb
+server:
+  port: 9040
+spring:
+  application:
+    name: escrow-company
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: Home23
+    url: jdbc:postgresql://localhost:5432/mortgage_process_accelerator?currentSchema=mpa
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

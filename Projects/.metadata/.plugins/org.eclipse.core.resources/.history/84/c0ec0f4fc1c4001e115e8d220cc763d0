@@ -1,0 +1,13 @@
+package com.zettamine.boot.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.zettamine.boot.entity.InspectionLot;
+
+public interface InspectionLotRepository extends JpaRepository<InspectionLot, Integer>{
+
+	List<InspectionLot> findAllOrderByLotId();
+
+}

@@ -1,0 +1,5 @@
+package com.zettamine.boot.aop.controller;
+
+public class ProductController {
+
+}

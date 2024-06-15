@@ -1,0 +1,5 @@
+package com.zettamine.matInspection.entity;
+
+public class Vendor {
+
+}

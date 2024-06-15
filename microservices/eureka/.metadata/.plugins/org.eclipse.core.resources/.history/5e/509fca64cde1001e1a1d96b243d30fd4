@@ -1,0 +1,31 @@
+server:
+ port: 7000
+ 
+spring:
+  application:
+    name: "configserver"
+  profiles:
+    active:
+    - git
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
+  cloud:
+    config:
+      server:
+        git:
+         uri: "https://github.com/Bharatk10/configserver.git"
+         default-label: main
+         timeout: 5
+         clone-on-start: true
+         force-pull: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  

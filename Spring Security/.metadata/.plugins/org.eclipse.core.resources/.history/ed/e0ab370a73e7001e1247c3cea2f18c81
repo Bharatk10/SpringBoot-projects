@@ -1,0 +1,60 @@
+package com.zettamine.boot.configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+public class SecurityConfiguration {
+	
+
+	@Bean
+	public SecurityFilterChain filter(HttpSecurity http) throws Exception{
+		
+		http.authorizeHttpRequests(t->t.anyRequest().authenticated());
+		
+		http.csrf(t ->t.disable());
+		http.httpBasic(Customizer.withDefaults());
+		http.formLogin(Customizer.withDefaults());
+		return http.build();
+	}
+	
+	@Bean
+	public UserDetailsService manageUsers() {
+		
+		UserDetails user1 = User.withUsername("bharat")
+							.password("{bcrypt}bharat123")
+						.roles("ADMIN","MANAGER")
+							.build();
+		UserDetails user2 = User.withUsername("vik")
+				             .password("{bcrypt}"+getPasswordEncode().encode("bharat123"))
+				             .roles("CUSTOMER")
+				             .build();
+		
+		UserDetailsManager users = new InMemoryUserDetailsManager(user1,user2);
+		
+		System.out.println(user1.getUsername());
+		System.out.println(user1.getPassword());
+		System.out.println(user1.getAuthorities());
+		return users;
+		
+	}
+	
+
+//	public PasswordEncoder getPasswordEncode() {   optional 
+//		
+//		return new BCryptPasswordEncoder();
+//	}
+	
+	
+
+}

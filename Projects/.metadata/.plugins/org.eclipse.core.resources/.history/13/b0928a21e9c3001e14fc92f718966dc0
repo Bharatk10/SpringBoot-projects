@@ -1,0 +1,13 @@
+package com.zettamine.boot.service;
+
+import com.zettamine.boot.entity.MaterialInspection;
+
+public class MaterialInspServiceImpl implements IMaterialInspection {
+
+	@Override
+	public MaterialInspection saveMaterialInsp(MaterialInspection matInsp) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

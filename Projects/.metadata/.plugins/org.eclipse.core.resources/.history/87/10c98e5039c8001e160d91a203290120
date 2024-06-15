@@ -1,0 +1,79 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<title>inspLot Inspection</title>
+
+<style>
+#inspLotTable {
+	width: 100%;
+	margin-top: 20px;
+	border-collapse: collapse;
+}
+
+#inspLotTable th, #inspLotTable td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+#inspLotTable th {
+	background-color: #f2f2f2;
+}
+
+@media ( max-width : 600px) {
+	#inspLotTable {
+		font-size: 14px;
+	}
+}
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+img{
+width:20px
+}
+</style>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+
+	<div class="content">
+		<button type="button" onclick="history.back()">Back</button>
+		<div class="boxes-container">
+			<a href="/zettaInsp/addInspLot">Add Lot Details</a>
+                 <a href="/zettaInsp/inspection">Inspection</a>
+                <a href="/zettaInsp/searchLot">Search Lot</a>
+             <th:block th:if ="${search}">
+              <a href="/zettaInsp/searchbylotid/{}">Search By Lot Id</a>
+                <a href="/zettaInsp/search">Search Lot Page</a>
+             </th:block>
+				<h3 style="z-index:100" th:value=${message}></h3>
+		</div>
+		
+<h3 style="z-index:100; color: green ;text-align:center" th:text=${message}></h3>
+<h3 style="z-index:100; color: red ;text-align:center" th:text=${failmessage}></h3>
+		
+	</div>
+</body>
+</html>

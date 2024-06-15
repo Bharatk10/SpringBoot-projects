@@ -1,0 +1,19 @@
+package com.zettamine.boot.repository;
+
+import java.util.List;
+import java.util.TreeSet;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.zettamine.boot.entity.Material;
+
+public interface MaterialRepository extends JpaRepository<Material,String> {
+
+	@Query("from Material order by materialId")
+	List<Material> findAllOrderByMaterialId();
+	
+	@Query("SELECT  m.materialName FROM Material m")
+    TreeSet<String> findAllMaterialNameame();
+
+}

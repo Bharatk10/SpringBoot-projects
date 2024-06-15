@@ -1,0 +1,12 @@
+package com.zettamine.boot.models;
+
+import java.sql.Date;
+
+public class InspLotSearchCriteria {
+	
+	private Date fromDate;
+	private Date toDate;
+	private String materialId;
+	
+
+}

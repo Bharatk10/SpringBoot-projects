@@ -1,0 +1,28 @@
+package com.zettamine.boot.entity;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+import jakarta.persistence.Embeddable;
+
+public class InspectionActualsId implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private Integer lotId;
+    private Integer channelId;
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InspectionActualsId that = (InspectionActualsId) o;
+        return Objects.equals(channelId, that.channelId) && Objects.equals(channelId, that.channelId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(channelId, lotId);
+    }
+
+}

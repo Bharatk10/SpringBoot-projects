@@ -1,0 +1,105 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/logo.jpg">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+<title>Material Inspection</title>
+
+<style>
+nav{
+position:sticky;
+	top:20px;}
+#materialTable {
+	width: 100%;
+	margin-top: 20px;
+	border-collapse: collapse;
+}
+
+#materialTable th, #materialTable td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+#materialTable th {
+	background-color: #f2f2f2;
+}
+
+@media ( max-width : 600px) {
+	#materialTable {
+		font-size: 14px;
+	}
+}
+button {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+img{
+width:20px
+}
+</style>
+
+<script src="https://kit.fontawesome.com/c323173fb6.js"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<nav th:include="home :: nav"></nav>
+	<sid th:include="home :: sid"></sid>
+
+	<div class="content">
+		<button type="button" onclick="history.back()">Back</button>
+		<div class="boxes-container">
+			<a href="/zettaInsp/addMaterial/add">Add Material</a> <a
+				href="/zettaInsp/materials">List all Materials</a> <a
+				href="/zettaInsp/searchMaterial">Search Material</a>
+				<h3 style="z-index:100" th:value=${message}></h3>
+		</div>
+		
+<h3 style="z-index:100; color: green ;text-align:center" th:text=${message}></h3>
+<h3 style="z-index:100; color: red ;text-align:center" th:text=${failmessage}></h3>
+		<table id="materialTable" class="table"
+			th:if="${not #lists.isEmpty(materialList)}">
+			<thead>
+				<tr>
+					<th>Material ID</th>
+					<th>Material Desc</th>
+					<th>Location Type</th>
+					<th>Actions</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr th:each="material : ${materialList}">
+					<td th:text="${material.materialId}"></td>
+					<td th:text="${material.desc}"></td>
+					<td th:text="${material.materialType}"></td>
+					<td><a
+						th:href="@{addMaterial/{materialId}(materialId = ${material.materialId})}"><i
+							class="fas fa-edit"></i></a> &nbsp;&nbsp; 
+							<a th:href="@{addcharateristics/{materialId}(materialId = ${material.materialId})}">
+							<img src="../../../images/addicon.jpg"></a>&nbsp;&nbsp; 
+					<a  style="color:green;" th:href="@{viewmaterial/{materialId}(materialId = ${material.materialId})}">
+						<i class="fa-regular fa-eye"></i></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

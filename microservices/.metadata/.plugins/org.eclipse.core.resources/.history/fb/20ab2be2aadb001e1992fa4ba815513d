@@ -1,0 +1,5 @@
+package com.zettamine.docker.compose.servive;
+
+public interface IUserService {
+
+}

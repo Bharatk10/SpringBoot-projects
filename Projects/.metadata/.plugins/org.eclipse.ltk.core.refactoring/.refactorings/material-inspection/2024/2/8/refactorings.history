@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract constant &apos;UPDATE_PLANT_FORM&apos; from expression &apos;&quot;updatePlantForm&quot;&apos;&#x0D;&#x0A;- Original project: &apos;material-inspection&apos;&#x0D;&#x0A;- Constant name: &apos;UPDATE_PLANT_FORM&apos;&#x0D;&#x0A;- Constant expression: &apos;&quot;updatePlantForm&quot;&apos;&#x0D;&#x0A;- Declared visibility: &apos;private&apos;&#x0D;&#x0A;- Replace occurrences of expression with constant" description="Extract constant &apos;UPDATE_PLANT_FORM&apos;" flags="786432" id="org.eclipse.jdt.ui.extract.constant" input="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.zettamine.boot.controller{PlantController.java" name="UPDATE_PLANT_FORM" qualify="false" replace="true" selection="5925 17" stamp="1708277304464" version="1.0" visibility="2"/>
+</session>

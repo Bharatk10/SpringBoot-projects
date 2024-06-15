@@ -1,0 +1,18 @@
+package com.zettamine.boot.models;
+
+import java.sql.Date;
+
+public class InspLotModel {
+	
+	private Integer lotId;
+    private String vendorName;
+    private String plantName;
+    private String materialName;
+    private String createdOn;
+    private Date startDate;
+    private Date endDate;
+    private String result;
+    private String userName;
+    private String remarks;
+
+}
